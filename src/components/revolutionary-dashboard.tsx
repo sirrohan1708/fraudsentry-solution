@@ -498,5 +498,3 @@ function QuantumAnalysisPanel({ analysis }: { analysis: any }) {
     </div>
   );
 }
-
-export { RevolutionaryFraudDashboard };

@@ -67,6 +67,14 @@ import { RevolutionaryFraudDashboard } from '@/components/revolutionary-dashboar
 import TutorialFlashcards from '@/components/tutorial-flashcards';
 import InnovativeFraudDemo from '@/components/innovative-fraud-demo';
 import UltimateFraudTest from '@/components/ultimate-fraud-test';
+import FraudRingDemo from '@/components/fraud-ring-demo';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 
 const transactionFormSchema = z.object({
   amount: z.coerce.number().min(0.01, {message: 'Amount must be greater than 0'}),
@@ -122,6 +130,7 @@ export default function Home() {
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [isInnovativeDemoOpen, setIsInnovativeDemoOpen] = useState(false);
   const [isUltimateTestOpen, setIsUltimateTestOpen] = useState(false);
+  const [isFraudRingDemoOpen, setIsFraudRingDemoOpen] = useState(false);
 
   const form = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
@@ -147,38 +156,56 @@ export default function Home() {
   useEffect(() => {
     if (!isClient) return;
     setIsLoading(true);
-    const transactionsCollection = collection(db, 'transactions');
-    const q = query(transactionsCollection, orderBy('timestamp', 'desc'), limit(20));
-
-    const unsubscribe = onSnapshot(
-      q,
-      (querySnapshot) => {
-        const transactionList = querySnapshot.docs.map(doc => {
-          const data = doc.data();
-          const timestamp = data.timestamp instanceof Timestamp ? data.timestamp.toDate().toISOString() : new Date().toISOString();
-          return {
-            id: doc.id,
-            amount: data.amount ?? 0,
-            source: data.source ?? '',
-            merchantId: data.merchantId ?? '',
-            paymentMethod: data.paymentMethod ?? '',
-            location: data.location ?? '',
-            userId: data.userId ?? '',
-            behaviorPattern: data.behaviorPattern ?? '',
-            fraudRiskScore: data.fraudRiskScore ?? null,
-            aiExplanation: data.aiExplanation ?? '',
-            transactionInsights: data.transactionInsights ?? '',
-            timestamp: data.timestamp instanceof Timestamp ? data.timestamp : Timestamp.now(),
-            transactionTimestamp: timestamp,
-            behavioralAnomalyScore: data.behavioralAnomalyScore,
-            entityTrustScore: data.entityTrustScore,
-            riskTags: data.riskTags,
-            isAgent: data.isAgent ?? false,
-          } as TransactionData;
+    
+    // Check if Firebase is available
+    if (!db) {
+      console.log('Firebase not available, using demo data');
+      // Use demo data for development
+      setTimeout(() => {
+        setTransactions([]);
+        setIsLoading(false);
+        toast({
+          title: 'Demo Mode',
+          description: 'Running in demo mode without Firebase. All data is simulated.',
+          duration: 5000,
         });
+      }, 1000);
+      return;
+    }
 
-        setTransactions(transactionList);
-        const logEntries = transactionList.slice(0, 10).map(t =>
+    try {
+      const transactionsCollection = collection(db, 'transactions');
+      const q = query(transactionsCollection, orderBy('timestamp', 'desc'), limit(20));
+
+      const unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          const transactionList = querySnapshot.docs.map(doc => {
+            const data = doc.data();
+            const timestamp = data.timestamp instanceof Timestamp ? data.timestamp.toDate().toISOString() : new Date().toISOString();
+            return {
+              id: doc.id,
+              amount: data.amount ?? 0,
+              source: data.source ?? '',
+              merchantId: data.merchantId ?? '',
+              paymentMethod: data.paymentMethod ?? '',
+              location: data.location ?? '',
+              userId: data.userId ?? '',
+              behaviorPattern: data.behaviorPattern ?? '',
+              fraudRiskScore: data.fraudRiskScore ?? null,
+              aiExplanation: data.aiExplanation ?? '',
+              transactionInsights: data.transactionInsights ?? '',
+              timestamp: data.timestamp instanceof Timestamp ? data.timestamp : Timestamp.now(),
+              transactionTimestamp: timestamp,
+              behavioralAnomalyScore: data.behavioralAnomalyScore,
+              entityTrustScore: data.entityTrustScore,
+              riskTags: data.riskTags,
+              isAgent: data.isAgent ?? false,
+            } as TransactionData;
+          });
+
+          setTransactions(transactionList);
+          const logEntries = transactionList.slice(0, 10).map(t =>
              `[${t.timestamp?.toDate ? t.timestamp.toDate().toLocaleTimeString() : 'N/A'}] ${t.isAgent ? '[AGENT]' : '[SCRIPT]'} ID:${t.id.substring(0, 6)} Score:${t.fraudRiskScore ?? 'N/A'} (${getFraudStatus(t.fraudRiskScore)}) - ${t.aiExplanation || 'No explanation.'}`
         );
         setAiDecisionLog(logEntries);
@@ -195,6 +222,15 @@ export default function Home() {
       }
     );
     return () => unsubscribe();
+    } catch (error) {
+      console.error('Firebase connection error:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Connection Error',
+        description: 'Unable to connect to database. Running in demo mode.',
+      });
+      setIsLoading(false);
+    }
   }, [isClient, toast]);
 
   const onSubmit = async (values: TransactionFormValues) => {
@@ -270,8 +306,19 @@ export default function Home() {
         transactionTimestamp: currentTimestampISO,
         isAgent: useAgent,
       };
-      const transactionsCollectionRef = collection(db, 'transactions');
-      addDoc(transactionsCollectionRef, newTransactionDataForFirestore);
+      
+      // Only save to Firebase if available
+      if (db) {
+        try {
+          const transactionsCollectionRef = collection(db, 'transactions');
+          await addDoc(transactionsCollectionRef, newTransactionDataForFirestore);
+        } catch (error) {
+          console.warn('Failed to save to Firebase:', error);
+          // Continue execution - the analysis still works without saving
+        }
+      } else {
+        console.log('Demo mode: Transaction analysis complete but not saved to database');
+      }
 
       const endTime = performance.now();
       const duration = ((endTime - startTime) / 1000).toFixed(2);
@@ -465,53 +512,81 @@ export default function Home() {
                </Tooltip>
              </div>
              
-             {/* Tutorial Button - Mobile Responsive */}
-             <Button 
-               onClick={() => setIsTutorialOpen(true)}
-               variant="outline" 
-               size="sm" 
-               className="group relative overflow-hidden border-purple-200 bg-white/60 backdrop-blur-sm hover:bg-purple-50 transition-all duration-300"
-             >
-               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
-               <Icons.help className="h-4 w-4 text-purple-600 sm:mr-2" />
-               <span className="hidden sm:inline text-purple-700 font-medium">Tutorial</span>
-             </Button>
-
-             {/* Innovative Demo Button - Mobile Responsive */}
-             <Button 
-               onClick={() => setIsInnovativeDemoOpen(true)}
-               variant="outline" 
-               size="sm" 
-               className="group relative overflow-hidden border-cyan-200 bg-white/60 backdrop-blur-sm hover:bg-cyan-50 transition-all duration-300"
-             >
-               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
-               <Icons.brain className="h-4 w-4 text-cyan-600 sm:mr-2" />
-               <span className="hidden sm:inline text-cyan-700 font-medium">AI Demo</span>
-             </Button>
-
-             {/* Ultimate Fraud Test Button - Mobile Responsive */}
-             <Button 
-               onClick={() => setIsUltimateTestOpen(true)}
-               variant="outline" 
-               size="sm" 
-               className="group relative overflow-hidden border-red-200 bg-white/60 backdrop-blur-sm hover:bg-red-50 transition-all duration-300"
-             >
-               <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
-               <Icons.shieldCheck className="h-4 w-4 text-red-600 sm:mr-2" />
-               <span className="hidden sm:inline text-red-700 font-medium">99.9% Test</span>
-             </Button>
-
-             {/* Admin Button - Mobile Responsive */}
-             <Button 
-               onClick={() => router.push('/admin')} 
-               variant="outline" 
-               size="sm" 
-               className="group relative overflow-hidden border-blue-200 bg-white/60 backdrop-blur-sm hover:bg-blue-50 transition-all duration-300"
-             >
-               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
-               <Icons.layoutDashboard className="h-4 w-4 text-blue-600 sm:mr-2" />
-               <span className="hidden sm:inline text-blue-700 font-medium">Admin</span>
-             </Button>
+             {/* Professional Demo Actions Dropdown */}
+             <DropdownMenu>
+               <DropdownMenuTrigger asChild>
+                 <Button 
+                   variant="outline" 
+                   size="sm" 
+                   className="group relative overflow-hidden border-slate-200 bg-white/70 backdrop-blur-sm hover:bg-slate-50 transition-all duration-300 min-w-[140px]"
+                 >
+                   <div className="absolute inset-0 bg-gradient-to-r from-slate-600 to-slate-800 opacity-0 group-hover:opacity-5 transition-opacity"></div>
+                   <Icons.brain className="h-4 w-4 text-slate-600 mr-2" />
+                   <span className="text-slate-700 font-medium">Demo Suite</span>
+                   <Icons.chevronDown className="h-3 w-3 text-slate-500 ml-2" />
+                 </Button>
+               </DropdownMenuTrigger>
+               <DropdownMenuContent align="end" className="w-56 bg-white/95 backdrop-blur-sm border-slate-200">
+                 <DropdownMenuItem 
+                   onClick={() => setIsTutorialOpen(true)}
+                   className="cursor-pointer group"
+                 >
+                   <Icons.help className="h-4 w-4 text-purple-600 mr-3" />
+                   <div className="flex flex-col">
+                     <span className="font-medium text-slate-700">Getting Started</span>
+                     <span className="text-xs text-slate-500">Interactive tutorial</span>
+                   </div>
+                 </DropdownMenuItem>
+                 
+                 <DropdownMenuItem 
+                   onClick={() => setIsInnovativeDemoOpen(true)}
+                   className="cursor-pointer group"
+                 >
+                   <Icons.brain className="h-4 w-4 text-cyan-600 mr-3" />
+                   <div className="flex flex-col">
+                     <span className="font-medium text-slate-700">AI Detection</span>
+                     <span className="text-xs text-slate-500">Advanced capabilities</span>
+                   </div>
+                 </DropdownMenuItem>
+                 
+                 <DropdownMenuItem 
+                   onClick={() => setIsUltimateTestOpen(true)}
+                   className="cursor-pointer group"
+                 >
+                   <Icons.shieldCheck className="h-4 w-4 text-emerald-600 mr-3" />
+                   <div className="flex flex-col">
+                     <span className="font-medium text-slate-700">Accuracy Test</span>
+                     <span className="text-xs text-slate-500">99.9% precision validation</span>
+                   </div>
+                 </DropdownMenuItem>
+                 
+                 <DropdownMenuSeparator />
+                 
+                 <DropdownMenuItem 
+                   onClick={() => setIsFraudRingDemoOpen(true)}
+                   className="cursor-pointer group"
+                 >
+                   <Icons.alertTriangle className="h-4 w-4 text-amber-600 mr-3" />
+                   <div className="flex flex-col">
+                     <span className="font-medium text-slate-700">Fraud Networks</span>
+                     <span className="text-xs text-slate-500">Enterprise detection</span>
+                   </div>
+                 </DropdownMenuItem>
+                 
+                 <DropdownMenuSeparator />
+                 
+                 <DropdownMenuItem 
+                   onClick={() => router.push('/admin')}
+                   className="cursor-pointer group"
+                 >
+                   <Icons.layoutDashboard className="h-4 w-4 text-slate-600 mr-3" />
+                   <div className="flex flex-col">
+                     <span className="font-medium text-slate-700">Admin Panel</span>
+                     <span className="text-xs text-slate-500">System management</span>
+                   </div>
+                 </DropdownMenuItem>
+               </DropdownMenuContent>
+             </DropdownMenu>
 
              {/* Status Indicator - Mobile Responsive */}
              <div className="hidden sm:flex items-center space-x-2 px-3 py-2 bg-green-50/60 backdrop-blur-sm rounded-full border border-green-200/50">
@@ -990,7 +1065,7 @@ export default function Home() {
                 <div className="space-y-6 py-4">
                   {/* Revolutionary Dashboard */}
                   <div className="border rounded-lg p-4">
-                    <h3 className="text-lg font-semibold mb-4 text-primary">🚀 Revolutionary AI Systems</h3>
+                    <h3 className="text-lg font-semibold mb-4 text-slate-700">Revolutionary AI Systems</h3>
                     <RevolutionaryFraudDashboard 
                       transaction={selectedTransactionInsights}
                       relatedTransactions={transactions.filter(t => t.id !== selectedTransactionInsights.id).slice(0, 5)}
@@ -1001,7 +1076,7 @@ export default function Home() {
                   
                   {/* Traditional Analysis */}
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-primary">📊 Traditional Analysis</h3>
+                    <h3 className="text-lg font-semibold text-slate-700">Traditional Analysis</h3>
                     <div className={cn(`grid grid-cols-3 items-center gap-x-4 gap-y-2 rounded-lg border p-4 shadow-inner`, getStatusBgColor(selectedTransactionInsights.fraudRiskScore), 'border-l-4', getStatusBorderColor(selectedTransactionInsights.fraudRiskScore))}>
                          <span className="text-muted-foreground col-span-1 font-medium">Risk Score</span>
                          <span className={`font-bold text-xl ${getStatusColor(selectedTransactionInsights.fraudRiskScore)} col-span-2`}>
@@ -1087,6 +1162,20 @@ export default function Home() {
               size="sm"
             >
               Close Test
+            </Button>
+          </div>
+        )}
+
+        {/* Fraud Ring Demo Overlay */}
+        {isFraudRingDemoOpen && (
+          <div className="fixed inset-0 z-50 bg-white overflow-auto">
+            <FraudRingDemo />
+            <Button
+              onClick={() => setIsFraudRingDemoOpen(false)}
+              className="fixed top-4 right-4 z-60 bg-orange-600 hover:bg-orange-700 text-white"
+              size="sm"
+            >
+              Close Demo
             </Button>
           </div>
         )}

@@ -32,6 +32,8 @@ export default function UltimateFraudTest() {
     paymentMethod: 'credit_card'
   });
 
+  console.log('Component state:', { selectedTest, isAnalyzing, result });
+
   // Predefined test cases that trigger definitive fraud detection
   const definitiveTestCases = [
     {
@@ -164,39 +166,54 @@ export default function UltimateFraudTest() {
   ];
 
   const runFraudAnalysis = async (testCase: any) => {
+    console.log('runFraudAnalysis called with:', testCase);
     setIsAnalyzing(true);
+    setSelectedTest(testCase.id);
     setResult(null);
     
-    // Simulate quantum-level analysis
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    // Generate definitive fraud result based on test case
-    const mockResult: FraudTestResult = {
-      fraudScore: getFraudScoreFromTestCase(testCase),
-      confidence: getConfidenceFromTestCase(testCase),
-      decision: 'BLOCK',
-      certaintyLevel: getConfidenceFromTestCase(testCase),
-      evidenceChain: [testCase.transactionData.biometricViolation || 
-                     testCase.transactionData.temporalViolation ||
-                     testCase.transactionData.emotionalViolation ||
-                     testCase.transactionData.networkViolation ||
-                     testCase.transactionData.circadianViolation ||
-                     testCase.transactionData.quantumViolation ||
-                     testCase.transactionData.psychologicalViolation],
-      riskFactors: ['DEFINITIVE_FRAUD_DETECTED', 'QUANTUM_CERTAINTY_ACHIEVED'],
-      preventionStrategy: 'IMMEDIATE_ACCOUNT_FREEZE',
-      investigationReport: {
-        summary: `Fraud detected with ${(getConfidenceFromTestCase(testCase) * 100).toFixed(1)}% certainty`,
-        action: 'BLOCK',
-        evidence_count: 1,
-        critical_violations: 1,
-        recommendation: 'IMMEDIATE_ACCOUNT_FREEZE',
-        timestamp: new Date().toISOString()
-      }
-    };
-    
-    setResult(mockResult);
-    setIsAnalyzing(false);
+    try {
+      // Simulate quantum-level analysis
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Generate definitive fraud result based on test case
+      const mockResult: FraudTestResult = {
+        fraudScore: getFraudScoreFromTestCase(testCase),
+        confidence: getConfidenceFromTestCase(testCase),
+        decision: 'BLOCK',
+        certaintyLevel: getConfidenceFromTestCase(testCase),
+        evidenceChain: [
+          testCase.transactionData.biometricViolation || 
+          testCase.transactionData.temporalViolation ||
+          testCase.transactionData.emotionalViolation ||
+          testCase.transactionData.networkViolation ||
+          testCase.transactionData.circadianViolation ||
+          testCase.transactionData.quantumViolation ||
+          testCase.transactionData.psychologicalViolation ||
+          {
+            type: 'FRAUD_DETECTED',
+            evidence: 'Definitive fraud patterns identified through advanced analysis',
+            certainty: getConfidenceFromTestCase(testCase)
+          }
+        ].filter(Boolean), // Remove any undefined values
+        riskFactors: ['DEFINITIVE_FRAUD_DETECTED', 'QUANTUM_CERTAINTY_ACHIEVED'],
+        preventionStrategy: 'IMMEDIATE_ACCOUNT_FREEZE',
+        investigationReport: {
+          summary: `Fraud detected with ${(getConfidenceFromTestCase(testCase) * 100).toFixed(1)}% certainty`,
+          action: 'BLOCK',
+          evidence_count: 1,
+          critical_violations: 1,
+          recommendation: 'IMMEDIATE_ACCOUNT_FREEZE',
+          timestamp: new Date().toISOString()
+        }
+      };
+      
+      console.log('Analysis result:', mockResult);
+      setResult(mockResult);
+    } catch (error) {
+      console.error('Error in runFraudAnalysis:', error);
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   const getFraudScoreFromTestCase = (testCase: any): number => {
@@ -283,14 +300,26 @@ export default function UltimateFraudTest() {
                   </div>
                   <Button 
                     size="sm" 
-                    className="w-full"
+                    className={`w-full transition-all ${
+                      isAnalyzing && selectedTest === testCase.id 
+                        ? 'bg-blue-600 hover:bg-blue-700' 
+                        : 'bg-red-600 hover:bg-red-700'
+                    }`}
                     onClick={(e) => {
+                      console.log('Button clicked for test:', testCase.id);
                       e.stopPropagation();
                       runFraudAnalysis(testCase);
                     }}
                     disabled={isAnalyzing}
                   >
-                    {isAnalyzing && selectedTest === testCase.id ? 'Analyzing...' : 'Run Analysis'}
+                    {isAnalyzing && selectedTest === testCase.id ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Analyzing...
+                      </>
+                    ) : (
+                      'Run Analysis'
+                    )}
                   </Button>
                 </CardContent>
               </Card>
@@ -409,6 +438,34 @@ export default function UltimateFraudTest() {
         </Card>
       )}
 
+      {/* Analysis Status Section - Always Visible */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="p-4">
+          <div className="text-center">
+            {isAnalyzing ? (
+              <div className="space-y-2">
+                <div className="text-lg font-semibold text-blue-700">
+                  🔍 Analyzing Transaction...
+                </div>
+                <Progress value={75} className="w-full" />
+                <p className="text-sm text-blue-600">
+                  Running quantum-level fraud detection on test case: {selectedTest}
+                </p>
+              </div>
+            ) : result ? (
+              <div className="text-lg font-semibold text-green-700">
+                ✅ Analysis Complete - Results displayed below
+              </div>
+            ) : (
+              <div className="text-lg font-semibold text-gray-600">
+                👆 Click "Run Analysis" on any test case above to begin
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Results Section */}
       {result && (
         <Card className="border-2 border-red-200">
           <CardHeader>
@@ -441,18 +498,18 @@ export default function UltimateFraudTest() {
               </div>
             </div>
 
-            {result.evidenceChain.length > 0 && (
+            {result.evidenceChain && result.evidenceChain.length > 0 && (
               <div className="space-y-2">
                 <h4 className="font-medium">Critical Evidence:</h4>
-                {result.evidenceChain.map((evidence, index) => (
+                {result.evidenceChain.filter(evidence => evidence && typeof evidence === 'object').map((evidence, index) => (
                   <div key={index} className="p-3 bg-red-50 rounded border border-red-200">
                     <div className="font-medium text-red-800">
-                      {evidence.type?.replace(/_/g, ' ')}
+                      {evidence?.type?.replace(/_/g, ' ') || 'Evidence Type'}
                     </div>
                     <div className="text-sm text-red-600">
-                      {evidence.evidence || evidence.impossibility}
+                      {evidence?.evidence || evidence?.impossibility || 'Evidence details'}
                     </div>
-                    {evidence.certainty && (
+                    {evidence?.certainty && (
                       <div className="text-xs text-red-500 mt-1">
                         Certainty: {(evidence.certainty * 100).toFixed(1)}%
                       </div>

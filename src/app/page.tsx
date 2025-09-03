@@ -497,7 +497,7 @@ export default function Home() {
          {/* Secondary Navigation Bar - Mobile Responsive */}
          <div className="border-t border-white/20 bg-white/40 backdrop-blur-sm">
            <div className="container mx-auto px-4 sm:px-6 py-2 sm:py-3">
-             <div className="flex items-center justify-between text-xs sm:text-sm"
+             <div className="flex items-center justify-between text-xs sm:text-sm">
                <div className="flex items-center space-x-6 text-gray-600">
                  <span className="flex items-center gap-2">
                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>

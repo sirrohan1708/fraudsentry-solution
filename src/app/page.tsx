@@ -369,27 +369,27 @@ export default function Home() {
   return (
     <TooltipProvider>
       <div className="flex flex-col min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/20 to-purple-50/30">
-       {/* Revolutionary Header with Glassmorphism */}
+       {/* Revolutionary Header with Glassmorphism - Mobile Optimized */}
        <header className="sticky top-0 z-50 w-full border-b border-white/20 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/60">
-         <div className="container mx-auto flex items-center justify-between h-20 px-6">
-           {/* Logo Section with Animation */}
+         <div className="container mx-auto flex items-center justify-between h-16 sm:h-20 px-4 sm:px-6">
+           {/* Logo Section with Animation - Mobile Responsive */}
            <motion.div 
              initial={{ opacity: 0, x: -20 }}
              animate={{ opacity: 1, x: 0 }}
-             className="flex items-center space-x-4"
+             className="flex items-center space-x-2 sm:space-x-4"
            >
              <div className="relative">
-               <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl blur-sm opacity-20"></div>
-               <div className="relative p-3 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl shadow-lg">
-                 <Icons.shieldCheck className="h-8 w-8 text-white" />
+               <div className="absolute inset-0 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl sm:rounded-2xl blur-sm opacity-20"></div>
+               <div className="relative p-2 sm:p-3 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl sm:rounded-2xl shadow-lg">
+                 <Icons.shieldCheck className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
                </div>
              </div>
-             <div>
+             <div className="min-w-0">
                 <motion.h1 
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="text-3xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700 bg-clip-text text-transparent tracking-tight"
+                  className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700 bg-clip-text text-transparent tracking-tight truncate"
                 >
                   FraudSentry
                 </motion.h1>
@@ -397,20 +397,21 @@ export default function Home() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="text-sm font-medium text-gray-600 flex items-center gap-2"
+                  className="text-xs sm:text-sm font-medium text-gray-600 flex items-center gap-1 sm:gap-2 truncate"
                 >
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                  Next-Gen AI Fraud Detection Platform
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-500 rounded-full animate-pulse flex-shrink-0"></span>
+                  <span className="hidden sm:inline">Next-Gen AI Fraud Detection Platform</span>
+                  <span className="sm:hidden">AI Fraud Detection</span>
                 </motion.p>
              </div>
            </motion.div>
 
-           {/* Center Navigation */}
+           {/* Center Navigation - Hidden on Mobile */}
            <motion.div 
              initial={{ opacity: 0, y: -10 }}
              animate={{ opacity: 1, y: 0 }}
              transition={{ delay: 0.4 }}
-             className="hidden md:flex items-center space-x-1 bg-white/50 backdrop-blur-sm rounded-full p-2 border border-white/30"
+             className="hidden lg:flex items-center space-x-1 bg-white/50 backdrop-blur-sm rounded-full p-2 border border-white/30"
            >
               <Tooltip>
                  <TooltipTrigger asChild>
@@ -435,14 +436,33 @@ export default function Home() {
               </Tooltip>
            </motion.div>
 
-           {/* Action Buttons */}
+           {/* Action Buttons - Mobile Responsive */}
            <motion.div 
              initial={{ opacity: 0, x: 20 }}
              animate={{ opacity: 1, x: 0 }}
              transition={{ delay: 0.5 }}
-             className="flex items-center space-x-3"
+             className="flex items-center space-x-2 sm:space-x-3"
            >
-             {/* Tutorial Button */}
+             {/* Mobile Mode Toggle */}
+             <div className="lg:hidden">
+               <Tooltip>
+                 <TooltipTrigger asChild>
+                   <Button
+                     variant="outline"
+                     size="sm"
+                     onClick={() => setUseAgent(!useAgent)}
+                     className="bg-white/50 backdrop-blur-sm border-white/40 hover:bg-white/70 transition-all duration-300 p-2"
+                   >
+                     <div className={`w-2 h-2 rounded-full ${useAgent ? 'bg-purple-500' : 'bg-blue-500'} animate-pulse`}></div>
+                   </Button>
+                 </TooltipTrigger>
+                 <TooltipContent side="bottom" className="text-xs bg-white/90 backdrop-blur-sm">
+                   {useAgent ? "Agent Mode" : "Scripted Mode"}
+                 </TooltipContent>
+               </Tooltip>
+             </div>
+             
+             {/* Tutorial Button - Mobile Responsive */}
              <Button 
                onClick={() => setIsTutorialOpen(true)}
                variant="outline" 
@@ -450,11 +470,11 @@ export default function Home() {
                className="group relative overflow-hidden border-purple-200 bg-white/60 backdrop-blur-sm hover:bg-purple-50 transition-all duration-300"
              >
                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
-               <Icons.help className="mr-2 h-4 w-4 text-purple-600" />
-               <span className="text-purple-700 font-medium">Tutorial</span>
+               <Icons.help className="h-4 w-4 text-purple-600 sm:mr-2" />
+               <span className="hidden sm:inline text-purple-700 font-medium">Tutorial</span>
              </Button>
 
-             {/* Admin Button */}
+             {/* Admin Button - Mobile Responsive */}
              <Button 
                onClick={() => router.push('/admin')} 
                variant="outline" 
@@ -462,22 +482,22 @@ export default function Home() {
                className="group relative overflow-hidden border-blue-200 bg-white/60 backdrop-blur-sm hover:bg-blue-50 transition-all duration-300"
              >
                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
-               <Icons.layoutDashboard className="mr-2 h-4 w-4 text-blue-600" />
-               <span className="text-blue-700 font-medium">Admin</span>
+               <Icons.layoutDashboard className="h-4 w-4 text-blue-600 sm:mr-2" />
+               <span className="hidden sm:inline text-blue-700 font-medium">Admin</span>
              </Button>
 
-             {/* Status Indicator */}
-             <div className="flex items-center space-x-2 px-3 py-2 bg-green-50/60 backdrop-blur-sm rounded-full border border-green-200/50">
+             {/* Status Indicator - Mobile Responsive */}
+             <div className="hidden sm:flex items-center space-x-2 px-3 py-2 bg-green-50/60 backdrop-blur-sm rounded-full border border-green-200/50">
                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                <span className="text-xs font-medium text-green-700">AI Systems Online</span>
              </div>
            </motion.div>
          </div>
 
-         {/* Secondary Navigation Bar */}
+         {/* Secondary Navigation Bar - Mobile Responsive */}
          <div className="border-t border-white/20 bg-white/40 backdrop-blur-sm">
-           <div className="container mx-auto px-6 py-3">
-             <div className="flex items-center justify-between text-sm">
+           <div className="container mx-auto px-4 sm:px-6 py-2 sm:py-3">
+             <div className="flex items-center justify-between text-xs sm:text-sm"
                <div className="flex items-center space-x-6 text-gray-600">
                  <span className="flex items-center gap-2">
                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
@@ -503,40 +523,41 @@ export default function Home() {
            </div>
          </div>
        </header>
-       <main className="flex-1 container mx-auto px-4 py-8">
-          {/* Revolutionary Features Showcase */}
+       <main className="flex-1 container mx-auto px-4 sm:px-6 py-4 sm:py-8">
+          {/* Revolutionary Features Showcase - Mobile Responsive */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-12"
+            className="mb-6 sm:mb-12"
           >
             <RevolutionaryFeaturesShowcase />
           </motion.div>
           
-          <div className="grid lg:grid-cols-3 gap-8">
+          {/* Main Content Grid - Mobile Responsive */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
               <motion.div 
                 initial={{ opacity: 0, x: -20 }} 
                 animate={{ opacity: 1, x: 0 }} 
                 transition={{ duration: 0.5, delay: 0.2 }} 
-                className="lg:col-span-1 space-y-6"
+                className="lg:col-span-1 space-y-6 order-2 lg:order-1"
               >
-                  <Card className="backdrop-blur-xl bg-white/20 border border-white/30 shadow-2xl sticky top-20 rounded-2xl overflow-hidden">
+                  <Card className="backdrop-blur-xl bg-white/20 border border-white/30 shadow-2xl lg:sticky lg:top-20 rounded-2xl overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
-                      <CardHeader className="relative border-b border-white/20 px-6 py-5 bg-gradient-to-r from-purple-500/5 to-blue-500/5">
-                         <CardTitle className="text-xl font-bold flex items-center text-gray-800">
-                           <div className="mr-3 p-2 rounded-xl bg-gradient-to-br from-purple-500 to-blue-600 text-white shadow-lg">
-                             <Icons.edit className="h-5 w-5" />
+                      <CardHeader className="relative border-b border-white/20 px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-r from-purple-500/5 to-blue-500/5">
+                         <CardTitle className="text-lg sm:text-xl font-bold flex items-center text-gray-800">
+                           <div className="mr-2 sm:mr-3 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-gradient-to-br from-purple-500 to-blue-600 text-white shadow-lg">
+                             <Icons.edit className="h-4 w-4 sm:h-5 sm:w-5" />
                            </div>
-                           Transaction Analysis
+                           <span className="truncate">Transaction Analysis</span>
                          </CardTitle>
-                          <CardDescription className="text-sm pt-2 text-gray-600 font-medium">
+                          <CardDescription className="text-xs sm:text-sm pt-1 sm:pt-2 text-gray-600 font-medium">
                             Enter transaction details for AI-powered fraud assessment
                           </CardDescription>
                       </CardHeader>
-                      <CardContent className="relative p-6 bg-gradient-to-br from-white/10 to-transparent">
+                      <CardContent className="relative p-4 sm:p-6 bg-gradient-to-br from-white/10 to-transparent">
                           <Form {...form}>
-                              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-5">
                                   <FormField control={form.control} name="amount" render={({field}) => (
                                       <FormItem>
                                           <FormLabel className="text-sm font-semibold text-gray-700">Amount ($)</FormLabel>
@@ -547,7 +568,7 @@ export default function Home() {
                                               placeholder="e.g., 100.00" 
                                               {...field} 
                                               onChange={e => field.onChange(isNaN(parseFloat(e.target.value)) ? '' : parseFloat(e.target.value))} 
-                                              className="h-12 text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
+                                              className="h-10 sm:h-12 text-sm sm:text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
                                             />
                                           </FormControl>
                                           <FormMessage className="text-xs" />
@@ -559,9 +580,9 @@ export default function Home() {
                                         <FormLabel className="text-sm font-semibold text-gray-700">Source</FormLabel>
                                         <FormControl>
                                           <Input 
-                                            placeholder="e.g., Credit Card **** 1234, Unknown VPN" 
+                                            placeholder="e.g., Credit Card **** 1234" 
                                             {...field} 
-                                            className="h-12 text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
+                                            className="h-10 sm:h-12 text-sm sm:text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
                                           />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -570,12 +591,12 @@ export default function Home() {
                                   
                                   <FormField control={form.control} name="merchantId" render={({field}) => (
                                       <FormItem>
-                                        <FormLabel className="text-sm font-semibold text-gray-700">Merchant ID / Name</FormLabel>
+                                        <FormLabel className="text-sm font-semibold text-gray-700">Merchant</FormLabel>
                                         <FormControl>
                                           <Input 
                                             placeholder="e.g., AMAZON_US, ShadyStore" 
                                             {...field} 
-                                            className="h-12 text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
+                                            className="h-10 sm:h-12 text-sm sm:text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
                                           />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -587,8 +608,8 @@ export default function Home() {
                                           <FormLabel className="text-sm font-semibold text-gray-700">Payment Method</FormLabel>
                                           <Select onValueChange={field.onChange} value={field.value || ''}>
                                             <FormControl>
-                                              <SelectTrigger className="h-12 text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner">
-                                                <SelectValue placeholder="Select payment method" />
+                                              <SelectTrigger className="h-10 sm:h-12 text-sm sm:text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner">
+                                                <SelectValue placeholder="Select method" />
                                               </SelectTrigger>
                                             </FormControl>
                                             <SelectContent className="backdrop-blur-xl bg-white/95 border-white/30 rounded-xl shadow-2xl">
@@ -610,9 +631,9 @@ export default function Home() {
                                         <FormLabel className="text-sm font-semibold text-gray-700">Location</FormLabel>
                                         <FormControl>
                                           <Input 
-                                            placeholder="e.g., New York, USA, High-Risk Country" 
+                                            placeholder="e.g., New York, USA" 
                                             {...field} 
-                                            className="h-12 text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
+                                            className="h-10 sm:h-12 text-sm sm:text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
                                           />
                                         </FormControl>
                                         <FormMessage className="text-xs" />
@@ -626,7 +647,7 @@ export default function Home() {
                                             <Input 
                                               placeholder="e.g., user_abc_123" 
                                               {...field} 
-                                              className="h-12 text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
+                                              className="h-10 sm:h-12 text-sm sm:text-base bg-white/60 backdrop-blur-sm border-white/40 rounded-xl focus:bg-white/80 transition-all duration-300 shadow-inner"
                                             />
                                           </FormControl>
                                           <FormDescription className="text-sm text-gray-600 font-medium">
@@ -636,21 +657,23 @@ export default function Home() {
                                         </FormItem>
                                    )} />
                                    
-                                  <div className="flex space-x-3 pt-6">
+                                  <div className="flex flex-col sm:flex-row gap-3 pt-4 sm:pt-6">
                                     <Button 
                                       type="submit" 
                                       disabled={analysisLoading} 
-                                      className="flex-1 h-12 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700 hover:from-purple-700 hover:via-blue-700 hover:to-purple-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                                      className="flex-1 h-11 sm:h-12 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700 hover:from-purple-700 hover:via-blue-700 hover:to-purple-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] text-sm sm:text-base"
                                     >
                                         {analysisLoading ? (
                                           <>
-                                            <Icons.spinner className="animate-spin mr-2 h-5 w-5" />
-                                            Analyzing...
+                                            <Icons.spinner className="animate-spin mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                                            <span className="hidden sm:inline">Analyzing...</span>
+                                            <span className="sm:hidden">Analyzing...</span>
                                           </>
                                         ) : (
                                           <>
-                                            <Icons.shieldCheck className="mr-2 h-5 w-5" />
-                                            Analyze Transaction
+                                            <Icons.shieldCheck className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                                            <span className="hidden sm:inline">Analyze Transaction</span>
+                                            <span className="sm:hidden">Analyze</span>
                                           </>
                                         )}
                                     </Button>
@@ -659,9 +682,9 @@ export default function Home() {
                                       variant="outline" 
                                       onClick={handleReset} 
                                       disabled={analysisLoading} 
-                                      className="h-12 px-6 bg-white/60 backdrop-blur-sm border-white/40 rounded-xl hover:bg-white/80 transition-all duration-300 shadow-lg"
+                                      className="h-11 sm:h-12 px-4 sm:px-6 bg-white/60 backdrop-blur-sm border-white/40 rounded-xl hover:bg-white/80 transition-all duration-300 shadow-lg text-sm sm:text-base"
                                     >
-                                      <Icons.refresh className="mr-2 h-4 w-4" />
+                                      <Icons.refresh className="mr-1 sm:mr-2 h-4 w-4" />
                                       Reset
                                     </Button>
                                   </div>
@@ -674,22 +697,22 @@ export default function Home() {
                 initial={{ opacity: 0, x: 20 }} 
                 animate={{ opacity: 1, x: 0 }} 
                 transition={{ duration: 0.5, delay: 0.3 }} 
-                className="lg:col-span-2 space-y-8"
+                className="lg:col-span-2 space-y-6 lg:space-y-8 order-1 lg:order-2"
               >
                    <Card className="backdrop-blur-xl bg-white/20 border border-white/30 shadow-2xl rounded-2xl overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-purple-500/5 to-transparent pointer-events-none"></div>
-                      <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-3 pt-6 px-6 bg-gradient-to-r from-blue-500/5 to-purple-500/5 border-b border-white/20">
-                          <CardTitle className="text-xl font-bold flex items-center text-gray-800">
-                              <div className="mr-3 p-2 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
-                                <Icons.messageSquare className="h-5 w-5" />
+                      <CardHeader className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0 pb-3 pt-4 sm:pt-6 px-4 sm:px-6 bg-gradient-to-r from-blue-500/5 to-purple-500/5 border-b border-white/20">
+                          <CardTitle className="text-lg sm:text-xl font-bold flex items-center text-gray-800">
+                              <div className="mr-2 sm:mr-3 p-1.5 sm:p-2 rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg">
+                                <Icons.messageSquare className="h-4 w-4 sm:h-5 sm:w-5" />
                               </div>
-                              AI Fraud Assessment
+                              <span className="truncate">AI Fraud Assessment</span>
                           </CardTitle>
                           {fraudExplanationDetails && (
                             <Button 
                               variant="ghost" 
                               size="sm" 
-                              className="text-sm h-9 px-4 bg-white/40 backdrop-blur-sm border border-white/30 rounded-xl hover:bg-white/60 transition-all duration-300 shadow-md font-medium" 
+                              className="text-xs sm:text-sm h-8 sm:h-9 px-3 sm:px-4 bg-white/40 backdrop-blur-sm border border-white/30 rounded-xl hover:bg-white/60 transition-all duration-300 shadow-md font-medium self-start sm:self-auto" 
                               onClick={() => handleOpenInsights({
                                 ...fraudExplanationDetails, 
                                 id: fraudExplanationDetails.transactionId,

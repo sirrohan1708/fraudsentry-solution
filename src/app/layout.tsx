@@ -16,7 +16,14 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'FraudSentry - AI-Powered Fraud Detection',
-  description: 'Real-time fraud detection system with AI-powered investigation and risk scoring',
+  description: 'Revolutionary AI-powered fraud detection platform with next-generation capabilities',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
+  robots: 'index, follow',
+  openGraph: {
+    title: 'FraudSentry - Revolutionary AI Fraud Detection',
+    description: 'Experience next-generation fraud prevention with cutting-edge technology',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

@@ -64,8 +64,9 @@ import {investigateFraudAgent, FraudAgentInput} from '@/ai/flows/investigate-fra
 import {cn} from '@/lib/utils';
 import {motion, AnimatePresence} from 'framer-motion';
 import { RevolutionaryFraudDashboard } from '@/components/revolutionary-dashboard';
-import { RevolutionaryFeaturesShowcase } from '@/components/revolutionary-features';
-import { TutorialFlashcards } from '@/components/tutorial-flashcards';
+import TutorialFlashcards from '@/components/tutorial-flashcards';
+import InnovativeFraudDemo from '@/components/innovative-fraud-demo';
+import UltimateFraudTest from '@/components/ultimate-fraud-test';
 
 const transactionFormSchema = z.object({
   amount: z.coerce.number().min(0.01, {message: 'Amount must be greater than 0'}),
@@ -119,6 +120,8 @@ export default function Home() {
   const [selectedTransactionInsights, setSelectedTransactionInsights] = useState<TransactionData | null>(null);
   const [isInsightsDialogOpen, setIsInsightsDialogOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
+  const [isInnovativeDemoOpen, setIsInnovativeDemoOpen] = useState(false);
+  const [isUltimateTestOpen, setIsUltimateTestOpen] = useState(false);
 
   const form = useForm<TransactionFormValues>({
     resolver: zodResolver(transactionFormSchema),
@@ -474,6 +477,30 @@ export default function Home() {
                <span className="hidden sm:inline text-purple-700 font-medium">Tutorial</span>
              </Button>
 
+             {/* Innovative Demo Button - Mobile Responsive */}
+             <Button 
+               onClick={() => setIsInnovativeDemoOpen(true)}
+               variant="outline" 
+               size="sm" 
+               className="group relative overflow-hidden border-cyan-200 bg-white/60 backdrop-blur-sm hover:bg-cyan-50 transition-all duration-300"
+             >
+               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
+               <Icons.brain className="h-4 w-4 text-cyan-600 sm:mr-2" />
+               <span className="hidden sm:inline text-cyan-700 font-medium">AI Demo</span>
+             </Button>
+
+             {/* Ultimate Fraud Test Button - Mobile Responsive */}
+             <Button 
+               onClick={() => setIsUltimateTestOpen(true)}
+               variant="outline" 
+               size="sm" 
+               className="group relative overflow-hidden border-red-200 bg-white/60 backdrop-blur-sm hover:bg-red-50 transition-all duration-300"
+             >
+               <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-pink-500 opacity-0 group-hover:opacity-10 transition-opacity"></div>
+               <Icons.shieldCheck className="h-4 w-4 text-red-600 sm:mr-2" />
+               <span className="hidden sm:inline text-red-700 font-medium">99.9% Test</span>
+             </Button>
+
              {/* Admin Button - Mobile Responsive */}
              <Button 
                onClick={() => router.push('/admin')} 
@@ -524,16 +551,6 @@ export default function Home() {
          </div>
        </header>
        <main className="flex-1 container mx-auto px-4 sm:px-6 py-4 sm:py-8">
-          {/* Revolutionary Features Showcase - Mobile Responsive */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="mb-6 sm:mb-12"
-          >
-            <RevolutionaryFeaturesShowcase />
-          </motion.div>
-          
           {/* Main Content Grid - Mobile Responsive */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
               <motion.div 
@@ -661,18 +678,18 @@ export default function Home() {
                                     <Button 
                                       type="submit" 
                                       disabled={analysisLoading} 
-                                      className="flex-1 h-11 sm:h-12 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700 hover:from-purple-700 hover:via-blue-700 hover:to-purple-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] text-sm sm:text-base"
+                                      className="sm:flex-1 h-11 sm:h-12 bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700 hover:from-purple-700 hover:via-blue-700 hover:to-purple-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02] text-sm sm:text-base min-w-0"
                                     >
                                         {analysisLoading ? (
                                           <>
-                                            <Icons.spinner className="animate-spin mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                                            <span className="hidden sm:inline">Analyzing...</span>
+                                            <Icons.spinner className="animate-spin mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                                            <span className="hidden sm:inline truncate">Analyzing...</span>
                                             <span className="sm:hidden">Analyzing...</span>
                                           </>
                                         ) : (
                                           <>
-                                            <Icons.shieldCheck className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                                            <span className="hidden sm:inline">Analyze Transaction</span>
+                                            <Icons.shieldCheck className="mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                                            <span className="hidden sm:inline truncate">Analyze Transaction</span>
                                             <span className="sm:hidden">Analyze</span>
                                           </>
                                         )}
@@ -682,10 +699,10 @@ export default function Home() {
                                       variant="outline" 
                                       onClick={handleReset} 
                                       disabled={analysisLoading} 
-                                      className="h-11 sm:h-12 px-4 sm:px-6 bg-white/60 backdrop-blur-sm border-white/40 rounded-xl hover:bg-white/80 transition-all duration-300 shadow-lg text-sm sm:text-base"
+                                      className="h-11 sm:h-12 px-4 sm:px-6 bg-white/60 backdrop-blur-sm border-white/40 rounded-xl hover:bg-white/80 transition-all duration-300 shadow-lg text-sm sm:text-base flex-shrink-0 min-w-fit"
                                     >
-                                      <Icons.refresh className="mr-1 sm:mr-2 h-4 w-4" />
-                                      Reset
+                                      <Icons.refresh className="mr-1 sm:mr-2 h-4 w-4 flex-shrink-0" />
+                                      <span className="whitespace-nowrap">Reset</span>
                                     </Button>
                                   </div>
                               </form>
@@ -1039,6 +1056,40 @@ export default function Home() {
             )}
           </DialogContent>
         </Dialog>
+
+        {/* Tutorial Flashcards Modal */}
+        <TutorialFlashcards 
+          isOpen={isTutorialOpen} 
+          onClose={() => setIsTutorialOpen(false)} 
+        />
+
+        {/* Innovative Fraud Demo Overlay */}
+        {isInnovativeDemoOpen && (
+          <div className="fixed inset-0 z-50">
+            <InnovativeFraudDemo />
+            <Button
+              onClick={() => setIsInnovativeDemoOpen(false)}
+              className="fixed top-4 right-4 z-60 bg-gray-800 hover:bg-gray-700 text-white"
+              size="sm"
+            >
+              Close Demo
+            </Button>
+          </div>
+        )}
+
+        {/* Ultimate Fraud Test Overlay */}
+        {isUltimateTestOpen && (
+          <div className="fixed inset-0 z-50 bg-white overflow-auto">
+            <UltimateFraudTest />
+            <Button
+              onClick={() => setIsUltimateTestOpen(false)}
+              className="fixed top-4 right-4 z-60 bg-red-600 hover:bg-red-700 text-white"
+              size="sm"
+            >
+              Close Test
+            </Button>
+          </div>
+        )}
       </div>
     </TooltipProvider>
   );

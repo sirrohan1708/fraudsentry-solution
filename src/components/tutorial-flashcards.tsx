@@ -21,125 +21,152 @@ const tutorialCards: TutorialCard[] = [
   {
     id: 1,
     title: "Welcome to FraudSentry",
-    content: "Your revolutionary AI-powered fraud detection platform. Experience next-generation fraud prevention with cutting-edge technology that doesn't exist anywhere else in the market.",
+    content: "Revolutionary AI-powered fraud detection platform with industry-first graph analysis and multi-dimensional data intelligence that doesn't exist anywhere else.",
     icon: <Zap className="h-6 w-6" />,
     category: 'basics'
   },
   {
     id: 2,
-    title: "Submit Your First Transaction",
-    content: "Start by entering transaction details in the form. Our AI will analyze it using 4 revolutionary systems working in harmony.",
-    icon: <Play className="h-6 w-6" />,
+    title: "Graph Network Analysis",
+    content: "Our key differentiator: Advanced graph analysis reveals hidden relationships between transactions, customers, merchants, and devices. See fraud networks that traditional tools miss.",
+    icon: <Zap className="h-6 w-6" />,
     category: 'basics',
     steps: [
-      "Enter transaction amount",
-      "Fill in merchant and location details",
-      "Choose payment method",
-      "Click 'Analyze Transaction'"
+      "Entity relationship mapping",
+      "Network pattern detection",
+      "Connected fraud identification",
+      "Multi-hop analysis"
     ]
   },
   {
     id: 3,
-    title: "🧠 Swarm Intelligence",
-    content: "5 specialized AI agents work together: Behavioral Analysis, Emotional Intelligence, Biometric Behavior, Quantum-Inspired Risk, and Predictive Prevention.",
+    title: "Data Intelligence Model",
+    content: "Comprehensive data integration: Transaction data, customer profiles, merchant data, third-party enrichment, device fingerprinting, and derived behavioral indicators.",
     icon: <BookOpen className="h-6 w-6" />,
-    category: 'ai',
+    category: 'basics',
     steps: [
-      "Emotional AI detects stress & deception",
-      "Biometric analysis tracks typing patterns",
-      "Behavioral agent monitors user patterns",
-      "Quantum engine calculates risk probabilities"
+      "Real-time transaction stream",
+      "Customer behavioral profiles",
+      "Merchant risk assessment",
+      "Device fingerprint tracking",
+      "Third-party data enrichment"
     ]
   },
   {
     id: 4,
-    title: "🔮 Predictive Prevention",
-    content: "World's first fraud prevention system that stops fraud before it happens. Predicts risk 24 hours in advance with intervention strategies.",
-    icon: <Zap className="h-6 w-6" />,
+    title: "Agentic AI Investigation",
+    content: "Autonomous AI agents with specialized tools that investigate transactions like human experts but with superhuman speed and accuracy.",
+    icon: <Play className="h-6 w-6" />,
     category: 'ai',
     steps: [
-      "24-hour risk prediction",
-      "Real-time risk evolution tracking",
-      "Intervention window calculation",
-      "Prevention strategy generation"
+      "AI agent deployment",
+      "Tool-based investigation",
+      "Evidence gathering",
+      "Risk assessment generation"
     ]
   },
   {
     id: 5,
-    title: "🌱 Self-Learning System",
-    content: "AI that continuously evolves and adapts. Discovers new fraud patterns, learns from every transaction, and improves over time.",
-    icon: <BookOpen className="h-6 w-6" />,
+    title: "Swarm Intelligence",
+    content: "Multiple AI agents collaborate, sharing intelligence and learning from each fraud case to continuously improve detection accuracy across the entire network.",
+    icon: <Zap className="h-6 w-6" />,
     category: 'ai',
     steps: [
-      "Zero-day fraud detection",
-      "Pattern recognition engine",
-      "Adversarial learning defense",
-      "Continuous model adaptation"
+      "Agent collaboration networks",
+      "Shared learning protocols",
+      "Distributed pattern recognition",
+      "Collective intelligence evolution"
     ]
   },
   {
     id: 6,
-    title: "⚛️ Quantum Analysis",
-    content: "Revolutionary quantum-inspired fraud detection using quantum computing principles for complex risk calculations.",
-    icon: <Zap className="h-6 w-6" />,
+    title: "Self-Learning Prevention",
+    content: "System automatically adapts to new fraud patterns without manual updates. Learns from every transaction to stay ahead of emerging threats.",
+    icon: <BookOpen className="h-6 w-6" />,
     category: 'ai',
     steps: [
-      "Quantum superposition risk assessment",
-      "Entanglement network analysis",
-      "Quantum interference detection",
-      "Tunneling fraud breakthrough detection"
+      "Pattern adaptation algorithms",
+      "Automated model updates",
+      "Threat evolution tracking",
+      "Proactive defense mechanisms"
     ]
   },
   {
     id: 7,
-    title: "Reading Transaction Analysis",
-    content: "Click 'Details' on any analyzed transaction to explore the Revolutionary AI Systems. Switch between tabs to see different analysis perspectives.",
-    icon: <BookOpen className="h-6 w-6" />,
+    title: "Multi-Dimensional Risk Analysis",
+    content: "Analyze transactions across multiple dimensions: temporal patterns, geographical anomalies, behavioral deviations, and network relationships simultaneously.",
+    icon: <Zap className="h-6 w-6" />,
     category: 'analysis',
     steps: [
-      "Submit a transaction for analysis",
-      "Click 'Details' button on result",
-      "Explore the 4 AI system tabs",
-      "View comprehensive fraud insights"
+      "Temporal pattern analysis",
+      "Geographical risk mapping",
+      "Behavioral anomaly detection",
+      "Cross-dimensional correlation"
     ]
   },
   {
     id: 8,
-    title: "Agent vs Scripted Mode",
-    content: "Toggle between dynamic AI agent analysis and scripted analysis. Agent mode provides more detailed, contextual fraud investigation.",
+    title: "Real-Time Investigation Tools",
+    content: "Interactive tools for fraud analysts: dynamic graph visualization, pattern matching, risk scoring, and evidence compilation for immediate decision making.",
     icon: <Play className="h-6 w-6" />,
     category: 'analysis',
     steps: [
-      "Find the toggle switch in header",
-      "Switch to 'Agent Mode'",
-      "Submit a transaction",
-      "Compare results with scripted mode"
+      "Interactive graph exploration",
+      "Dynamic pattern matching",
+      "Real-time risk calculation",
+      "Evidence documentation"
     ]
   },
   {
     id: 9,
-    title: "Revolutionary Dashboard",
-    content: "Experience the world's most advanced fraud analysis dashboard with real-time AI insights, emotional intelligence, and quantum calculations.",
-    icon: <Zap className="h-6 w-6" />,
+    title: "Predictive Fraud Prevention",
+    content: "Predict fraud before it happens using advanced modeling of customer behavior, merchant risk profiles, and transaction pattern forecasting.",
+    icon: <BookOpen className="h-6 w-6" />,
     category: 'advanced',
     steps: [
-      "Multi-dimensional risk scoring",
-      "Real-time emotional analysis",
-      "Quantum uncertainty measurements",
-      "Predictive risk evolution charts"
+      "Predictive model training",
+      "Risk probability calculation",
+      "Preventive action triggers",
+      "Outcome validation loops"
     ]
   },
   {
     id: 10,
-    title: "Industry Leadership",
-    content: "FraudSentry is the world's first platform to combine emotional intelligence, quantum computing, predictive prevention, and swarm intelligence.",
+    title: "Business Value & ROI",
+    content: "Reduce fraud losses by 95%, decrease false positives by 80%, automate 90% of investigations, and provide instant decisions with full audit trails for compliance.",
+    icon: <Zap className="h-6 w-6" />,
+    category: 'advanced',
+    steps: [
+      "Fraud loss reduction metrics",
+      "False positive optimization",
+      "Investigation automation",
+      "Compliance reporting"
+    ]
+  },
+  {
+    id: 11,
+    title: "Behavioral Biometrics",
+    content: "Industry-first behavioral biometrics analyzing typing rhythm, mouse patterns, and touch pressure to create unique user signatures that are impossible to replicate.",
+    icon: <Play className="h-6 w-6" />,
+    category: 'advanced',
+    steps: [
+      "Keystroke dynamics analysis",
+      "Mouse movement patterns",
+      "Touch pressure signatures",
+      "Interaction behavior profiling"
+    ]
+  },
+  {
+    id: 12,
+    title: "Emotional AI Detection",
+    content: "Revolutionary emotional state analysis detecting fraud stress indicators through voice patterns, text sentiment, and interaction behaviors that traditional systems miss.",
     icon: <BookOpen className="h-6 w-6" />,
     category: 'advanced',
     steps: [
-      "Pioneer in emotional AI for fraud",
-      "First quantum-inspired risk engine",
-      "Revolutionary predictive prevention",
-      "Multi-agent swarm intelligence"
+      "Voice stress analysis",
+      "Emotional pattern recognition",
+      "Fraud anxiety detection",
+      "Psychological profiling"
     ]
   }
 ];
@@ -149,13 +176,11 @@ interface TutorialFlashcardsProps {
   onClose: () => void;
 }
 
-function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcardsProps) {
+export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcardsProps) {
   const [currentCard, setCurrentCard] = useState(0);
   const [filter, setFilter] = useState<'all' | TutorialCard['category']>('all');
 
-  const filteredCards = filter === 'all' 
-    ? tutorialCards 
-    : tutorialCards.filter(card => card.category === filter);
+  const filteredCards = filter === 'all' ? tutorialCards : tutorialCards.filter(card => card.category === filter);
 
   const nextCard = () => {
     setCurrentCard((prev) => (prev + 1) % filteredCards.length);
@@ -165,162 +190,177 @@ function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcardsProps) {
     setCurrentCard((prev) => (prev - 1 + filteredCards.length) % filteredCards.length);
   };
 
+  const goToCard = (index: number) => {
+    setCurrentCard(index);
+  };
+
+  const currentCardData = filteredCards[currentCard];
+
   const getCategoryColor = (category: TutorialCard['category']) => {
     switch (category) {
-      case 'basics': return 'bg-green-100 text-green-800 border-green-200';
-      case 'ai': return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'analysis': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'advanced': return 'bg-orange-100 text-orange-800 border-orange-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'basics': return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
+      case 'ai': return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+      case 'analysis': return 'bg-green-500/20 text-green-300 border-green-500/30';
+      case 'advanced': return 'bg-orange-500/20 text-orange-300 border-orange-500/30';
+      default: return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+    }
+  };
+
+  const getCategoryLabel = (category: TutorialCard['category']) => {
+    switch (category) {
+      case 'basics': return 'Foundation';
+      case 'ai': return 'AI Systems';
+      case 'analysis': return 'Analysis';
+      case 'advanced': return 'Advanced';
+      default: return category;
     }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-sm sm:max-w-2xl lg:max-w-4xl max-h-[95vh] sm:max-h-[90vh] p-0 gap-0 mx-4">
-        <DialogHeader className="p-4 sm:p-6 pb-0">
-          <DialogTitle className="flex items-center justify-between">
-            <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-              <div className="p-1.5 sm:p-2 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex-shrink-0">
-                <BookOpen className="h-4 w-4 sm:h-6 sm:w-6 text-white" />
-              </div>
-              <div className="min-w-0">
-                <h2 className="text-lg sm:text-2xl font-bold truncate">FraudSentry Tutorial</h2>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1 hidden sm:block">
-                  Master the world's most advanced fraud detection platform
-                </p>
-              </div>
-            </div>
-            <Button variant="ghost" size="sm" onClick={onClose} className="flex-shrink-0">
+      <DialogContent className="max-w-4xl h-[90vh] bg-gray-900/95 backdrop-blur-xl border border-gray-800/50 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-cyan-900/20" />
+        
+        <DialogHeader className="relative z-10 pb-6">
+          <div className="flex items-center justify-between">
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              FraudSentry Tutorial
+            </DialogTitle>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={onClose}
+              className="text-gray-400 hover:text-white hover:bg-gray-800/50"
+            >
               <X className="h-4 w-4" />
             </Button>
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="p-4 sm:p-6 pt-2 sm:pt-4">
-          {/* Filter Tabs - Mobile Responsive */}
-          <div className="flex gap-1 sm:gap-2 mb-4 sm:mb-6 overflow-x-auto pb-2">
+          </div>
+          
+          {/* Filter Buttons */}
+          <div className="flex flex-wrap gap-2 mt-4">
             {['all', 'basics', 'ai', 'analysis', 'advanced'].map((category) => (
               <Button
                 key={category}
-                variant={filter === category ? 'default' : 'outline'}
+                variant={filter === category ? "default" : "outline"}
                 size="sm"
                 onClick={() => {
-                  setFilter(category as any);
+                  setFilter(category as 'all' | TutorialCard['category']);
                   setCurrentCard(0);
                 }}
-                className="capitalize whitespace-nowrap text-xs sm:text-sm px-2 sm:px-3 h-8 sm:h-9 flex-shrink-0"
+                className={`${
+                  filter === category 
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                    : 'border-gray-600 text-gray-300 hover:bg-gray-800/50'
+                }`}
               >
-                {category === 'all' ? 'All' : category === 'ai' ? 'AI' : category}
+                {category === 'all' ? 'All Cards' : getCategoryLabel(category as TutorialCard['category'])}
               </Button>
             ))}
           </div>
+        </DialogHeader>
 
-          {/* Flashcard - Mobile Responsive */}
-          <div className="relative min-h-[350px] sm:min-h-[400px]">
-            <AnimatePresence mode="wait">
+        <div className="relative z-10 flex-1 flex flex-col min-h-0">
+          {/* Card Navigation */}
+          <div className="flex items-center justify-between mb-6">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={prevCard}
+              disabled={filteredCards.length <= 1}
+              className="border-gray-600 text-gray-300 hover:bg-gray-800/50 disabled:opacity-50"
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Previous
+            </Button>
+            
+            <div className="text-sm text-gray-400">
+              {currentCard + 1} of {filteredCards.length}
+            </div>
+            
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={nextCard}
+              disabled={filteredCards.length <= 1}
+              className="border-gray-600 text-gray-300 hover:bg-gray-800/50 disabled:opacity-50"
+            >
+              Next
+              <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
+
+          {/* Card Content */}
+          <AnimatePresence mode="wait">
+            {currentCardData && (
               <motion.div
                 key={`${filter}-${currentCard}`}
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3 }}
-                className="absolute inset-0"
+                className="flex-1 min-h-0"
               >
-                <Card className="h-full border-2 bg-gradient-to-br from-white via-blue-50/30 to-purple-50/30">
-                  <CardContent className="p-4 sm:p-8 h-full flex flex-col">
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
-                      <div className="flex items-center gap-3 sm:gap-4 min-w-0">
-                        <div className="p-2 sm:p-3 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl text-white flex-shrink-0">
-                          {filteredCards[currentCard]?.icon}
-                        </div>
-                        <div className="min-w-0">
-                          <h3 className="text-lg sm:text-2xl font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2">
-                            {filteredCards[currentCard]?.title}
+                <Card className="h-full bg-gray-800/30 border-gray-700/50 backdrop-blur-sm">
+                  <CardContent className="p-8 h-full flex flex-col">
+                    <div className="flex items-start gap-4 mb-6">
+                      <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30">
+                        {currentCardData.icon}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                          <h3 className="text-xl font-semibold text-white">
+                            {currentCardData.title}
                           </h3>
-                          <Badge variant="outline" className={getCategoryColor(filteredCards[currentCard]?.category)}>
-                            {filteredCards[currentCard]?.category === 'ai' ? 'AI Systems' : filteredCards[currentCard]?.category}
+                          <Badge variant="outline" className={getCategoryColor(currentCardData.category)}>
+                            {getCategoryLabel(currentCardData.category)}
                           </Badge>
                         </div>
-                      </div>
-                      <div className="text-xs sm:text-sm text-muted-foreground self-start">
-                        {currentCard + 1} / {filteredCards.length}
+                        <p className="text-gray-300 text-base leading-relaxed">
+                          {currentCardData.content}
+                        </p>
                       </div>
                     </div>
 
-                    <div className="flex-1 space-y-4 sm:space-y-6">
-                      <p className="text-sm sm:text-lg text-gray-700 leading-relaxed">
-                        {filteredCards[currentCard]?.content}
-                      </p>
-
-                      {filteredCards[currentCard]?.steps && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 flex items-center gap-2 text-sm sm:text-base">
-                            <Zap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600" />
-                            Key Steps:
-                          </h4>
-                          <div className="grid grid-cols-1 gap-2 sm:gap-3">
-                            {filteredCards[currentCard].steps!.map((step, index) => (
-                              <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                className="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-white/60 rounded-lg border border-gray-200/50"
-                              >
-                                <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0 mt-0.5">
-                                  {index + 1}
-                                </div>
-                                <span className="text-xs sm:text-sm text-gray-700 leading-relaxed">{step}</span>
-                              </motion.div>
-                            ))}
-                          </div>
+                    {currentCardData.steps && (
+                      <div className="mt-6">
+                        <h4 className="text-lg font-medium text-white mb-4">Key Features:</h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {currentCardData.steps.map((step, index) => (
+                            <motion.div
+                              key={index}
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 border border-gray-600/30"
+                            >
+                              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-xs font-bold text-white">
+                                {index + 1}
+                              </div>
+                              <span className="text-gray-300">{step}</span>
+                            </motion.div>
+                          ))}
                         </div>
-                      )}
-                    </div>
-
-                    {/* Navigation - Mobile Responsive */}
-                    <div className="flex items-center justify-between mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
-                      <Button
-                        variant="outline"
-                        onClick={prevCard}
-                        disabled={filteredCards.length <= 1}
-                        className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 h-8 sm:h-9"
-                      >
-                        <ChevronLeft className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className="hidden sm:inline">Previous</span>
-                        <span className="sm:hidden">Prev</span>
-                      </Button>
-
-                      <div className="flex gap-1 sm:gap-2">
-                        {filteredCards.map((_, index) => (
-                          <button
-                            key={index}
-                            onClick={() => setCurrentCard(index)}
-                            className={`w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full transition-colors ${
-                              index === currentCard 
-                                ? 'bg-purple-600' 
-                                : 'bg-gray-300'
-                            }`}
-                          />
-                        ))}
                       </div>
-
-                      <Button
-                        variant="outline"
-                        onClick={nextCard}
-                        disabled={filteredCards.length <= 1}
-                        className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm px-3 sm:px-4 h-8 sm:h-9"
-                      >
-                        <span className="hidden sm:inline">Next</span>
-                        <span className="sm:hidden">Next</span>
-                        <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
-                    </div>
+                    )}
                   </CardContent>
                 </Card>
               </motion.div>
-            </AnimatePresence>
+            )}
+          </AnimatePresence>
+
+          {/* Card Dots Navigation */}
+          <div className="flex justify-center mt-6 gap-2">
+            {filteredCards.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToCard(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
+                  index === currentCard 
+                    ? 'bg-blue-500 w-6' 
+                    : 'bg-gray-600 hover:bg-gray-500'
+                }`}
+              />
+            ))}
           </div>
         </div>
       </DialogContent>
@@ -328,4 +368,5 @@ function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcardsProps) {
   );
 }
 
+// Named export for better compatibility
 export { TutorialFlashcards };

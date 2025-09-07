@@ -126,6 +126,7 @@ export default function Home() {
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [analysisLoading, setAnalysisLoading] = useState(false);
+  const [analysisProgress, setAnalysisProgress] = useState<string>('');
   const [selectedTransactionInsights, setSelectedTransactionInsights] = useState<TransactionData | null>(null);
   const [isInsightsDialogOpen, setIsInsightsDialogOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
@@ -237,22 +238,39 @@ export default function Home() {
   const onSubmit = async (values: TransactionFormValues) => {
     setAnalysisLoading(true);
     setFraudExplanationDetails(null);
+    setAnalysisProgress('Initializing...');
     const startTime = performance.now();
     const tempTransactionId = 'TXN' + Date.now();
     const currentTimestamp = new Date();
     const currentTimestampISO = currentTimestamp.toISOString();
 
     try {
-        // 🚀 USE UNIFIED FRAUD DETECTION ENGINE
-        console.log('🎯 Starting Unified Fraud Detection...');
+        // 🚀 SHOW IMMEDIATE FEEDBACK
+        setAnalysisProgress('Starting AI analysis...');
+        toast({
+          title: '⚡ Analysis Started',
+          description: 'Processing transaction with advanced AI detection...',
+          duration: 2000,
+        });
+
+        // 🎯 USE UNIFIED FRAUD DETECTION ENGINE (Optimized)
+        console.log('🎯 Starting Optimized Unified Fraud Detection...');
         const unifiedInput: UnifiedDetectionInput = { 
           ...values, 
           transactionTimestamp: currentTimestampISO 
         };
         
+        // Start analysis with immediate progress tracking
+        setAnalysisProgress('Running multi-layer detection...');
+        
+        // Show progress updates without blocking
+        setTimeout(() => setAnalysisProgress('Analyzing behavioral patterns...'), 200);
+        setTimeout(() => setAnalysisProgress('Processing risk indicators...'), 400);
+        setTimeout(() => setAnalysisProgress('Finalizing results...'), 600);
+        
         const unifiedResult = await runUnifiedFraudDetection(unifiedInput);
         
-        // Extract results from unified engine
+        // Process results immediately without waiting for Firebase
         const currentFraudScore = unifiedResult.fraudRiskScore;
         const determinedBehaviorPattern = unifiedResult.behaviorPattern;
         const finalExplanation = unifiedResult.explanation;
@@ -264,6 +282,27 @@ export default function Home() {
             riskTags: unifiedResult.riskTags,
         };
 
+        // Prepare Firebase data structure first
+        const newTransactionDataForFirestore = {
+            ...values,
+            fraudRiskScore: currentFraudScore,
+            behaviorPattern: determinedBehaviorPattern,
+            aiExplanation: finalExplanation,
+            transactionInsights: insightsResult?.insights ?? 'N/A',
+            behavioralAnomalyScore: insightsResult?.behavioralAnomalyScore ?? null,
+            entityTrustScore: insightsResult?.entityTrustScore ?? null,
+            riskTags: riskTags ?? [],
+            timestamp: serverTimestamp(),
+            transactionTimestamp: currentTimestampISO,
+            isAgent: true, // Always unified detection
+            detectionEngine: 'unified',
+            confidence: unifiedResult.confidence,
+            riskLevel: unifiedResult.riskLevel,
+            processingTime: unifiedResult.processingTime,
+            detectionMethods: unifiedResult.detectionMethods,
+        };
+
+        // Set results immediately for instant UI update
         setFraudExplanationDetails({
             transactionId: tempTransactionId,
             ...values,
@@ -275,94 +314,82 @@ export default function Home() {
             unifiedResult: unifiedResult, // Store full result for detailed view
         });
 
-      const newTransactionDataForFirestore = {
-        ...values,
-        fraudRiskScore: currentFraudScore,
-        behaviorPattern: determinedBehaviorPattern,
-        aiExplanation: finalExplanation,
-        transactionInsights: insightsResult?.insights ?? 'N/A',
-        behavioralAnomalyScore: insightsResult?.behavioralAnomalyScore ?? null,
-        entityTrustScore: insightsResult?.entityTrustScore ?? null,
-        riskTags: riskTags ?? [],
-        timestamp: serverTimestamp(),
-        transactionTimestamp: currentTimestampISO,
-        isAgent: true, // Always unified detection
-        detectionEngine: 'unified',
-        confidence: unifiedResult.confidence,
-        riskLevel: unifiedResult.riskLevel,
-        processingTime: unifiedResult.processingTime,
-        detectionMethods: unifiedResult.detectionMethods,
-      };
-      
-      // Only save to Firebase if available
-      if (db) {
-        try {
-          const transactionsCollectionRef = collection(db, 'transactions');
-          await addDoc(transactionsCollectionRef, newTransactionDataForFirestore);
-        } catch (error) {
-          console.warn('Failed to save to Firebase:', error);
-          // Continue execution - the analysis still works without saving
+        // Save to Firebase asynchronously in background (non-blocking)
+        if (db) {
+            // Fire and forget - don't wait for this
+            addDoc(collection(db, 'transactions'), newTransactionDataForFirestore)
+                .then(() => console.log('Transaction saved to Firebase'))
+                .catch(error => console.warn('Failed to save to Firebase:', error));
+        } else {
+            console.log('Demo mode: Transaction analysis complete but not saved to database');
         }
-      } else {
-        console.log('Demo mode: Transaction analysis complete but not saved to database');
-      }
 
-      const endTime = performance.now();
-      const duration = ((endTime - startTime) / 1000).toFixed(2);
+        // Show immediate success toast with results
+        const endTime = performance.now();
+        const duration = ((endTime - startTime) / 1000).toFixed(2);
 
-      toast({
-         title: 'Analysis Complete',
-         description: (
-           <div className="flex flex-col space-y-1 text-sm">
-             <span>
-               Fraud Score:{' '}
-               <strong className={getStatusColor(currentFraudScore)}>
-                 {currentFraudScore}
-               </strong>{' '}
-               ({getFraudStatus(currentFraudScore)})
-             </span>
-              <span className="text-xs text-muted-foreground">Confidence: {unifiedResult.confidence}%</span>
-              <span className="text-xs text-muted-foreground">Behavior: {determinedBehaviorPattern}</span>
-              {(riskTags.length ?? 0) > 0 && (
-                <span className="text-xs text-muted-foreground">
-                  Tags: {riskTags.slice(0, 3).join(', ')}{riskTags.length > 3 ? '...' : ''}
-                </span>
-              )}
-             <span className="text-xs text-muted-foreground">Time: {(unifiedResult.processingTime / 1000).toFixed(2)}s</span>
-             <Button
-               variant="link" size="sm" className="p-0 h-auto text-xs text-primary justify-start hover:underline"
-               onClick={(e) => {
-                 e.stopPropagation();
-                 const detailData = {
-                     ...newTransactionDataForFirestore,
-                     id: tempTransactionId,
-                     timestamp: Timestamp.now(),
-                     transactionTimestamp: currentTimestampISO,
-                 } as TransactionData;
-                 handleOpenInsights(detailData);
-               }}
-             >
-               View Details
-             </Button>
-           </div>
-         ),
-         duration: 7000,
-       });
+        toast({
+           title: '⚡ Analysis Complete',
+           description: (
+             <div className="flex flex-col space-y-1 text-sm">
+               <span>
+                 Fraud Score:{' '}
+                 <strong className={getStatusColor(currentFraudScore)}>
+                   {currentFraudScore}
+                 </strong>{' '}
+                 ({getFraudStatus(currentFraudScore)})
+               </span>
+                <span className="text-xs text-muted-foreground">Confidence: {unifiedResult.confidence}%</span>
+                <span className="text-xs text-muted-foreground">Behavior: {determinedBehaviorPattern}</span>
+                {(riskTags?.length ?? 0) > 0 && (
+                  <span className="text-xs text-muted-foreground">
+                    Tags: {riskTags.slice(0, 3).join(', ')}{riskTags.length > 3 ? '...' : ''}
+                  </span>
+                )}
+               <span className="text-xs text-muted-foreground">Time: {(unifiedResult.processingTime / 1000).toFixed(2)}s</span>
+               <Button
+                 variant="link" size="sm" className="p-0 h-auto text-xs text-primary justify-start hover:underline"
+                 onClick={(e) => {
+                   e.stopPropagation();
+                   const detailData = {
+                       ...newTransactionDataForFirestore,
+                       id: tempTransactionId,
+                       timestamp: Timestamp.now(),
+                       transactionTimestamp: currentTimestampISO,
+                   } as TransactionData;
+                   handleOpenInsights(detailData);
+                 }}
+               >
+                 View Details
+               </Button>
+             </div>
+           ),
+           duration: 7000,
+         });
     } catch (error: any) {
       console.error('Error analyzing transaction:', error);
+      
+      // Set loading to false immediately
+      setAnalysisLoading(false);
+      setAnalysisProgress('');
+      
       toast({
         variant: 'destructive',
-        title: 'Error Analyzing Transaction',
-        description: `Analysis failed. ${error.message}`,
+        title: 'Analysis Error',
+        description: `Failed to analyze transaction: ${error.message || 'Unknown error'}`,
+        duration: 5000,
       });
     } finally {
+      // Ensure UI is reset regardless of outcome
       setAnalysisLoading(false);
+      setAnalysisProgress('');
     }
   };
 
   const handleReset = useCallback(() => {
     form.reset({ amount: 0, source: '', merchantId: '', paymentMethod: '', location: '', userId: '' });
     setFraudExplanationDetails(null);
+    setAnalysisProgress('');
     toast({ title: 'Form Cleared', description: 'Transaction details reset.', duration: 3000 });
   }, [form, toast]);
 
@@ -697,14 +724,14 @@ export default function Home() {
                                         {analysisLoading ? (
                                           <>
                                             <Icons.spinner className="animate-spin mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                                            <span className="hidden sm:inline truncate">Analyzing...</span>
-                                            <span className="sm:hidden">Analyzing...</span>
+                                            <span className="hidden sm:inline truncate">{analysisProgress || 'AI Analyzing...'}</span>
+                                            <span className="sm:hidden">AI Analysis...</span>
                                           </>
                                         ) : (
                                           <>
                                             <Icons.shieldCheck className="mr-2 h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                                            <span className="hidden sm:inline truncate">Analyze Transaction</span>
-                                            <span className="sm:hidden">Analyze</span>
+                                            <span className="hidden sm:inline truncate">⚡ Analyze Transaction</span>
+                                            <span className="sm:hidden">⚡ Analyze</span>
                                           </>
                                         )}
                                     </Button>

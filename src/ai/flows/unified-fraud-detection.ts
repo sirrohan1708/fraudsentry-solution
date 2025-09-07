@@ -62,73 +62,111 @@ export const runUnifiedFraudDetection = async (input: UnifiedDetectionInput): Pr
   const startTime = performance.now();
   
   try {
-    console.log('Starting Enhanced Fraud Detection Engine...');
+    console.log('🚀 Starting Enhanced Fraud Detection Engine...');
     
-    // LAYER 1: FOUNDATION - Scripted Detection (Always Reliable)
-    console.log('Layer 1: Running scripted detection foundation...');
+    // LAYER 1: FOUNDATION - Scripted Detection (Always Reliable & Fast)
+    console.log('⚡ Layer 1: Running scripted detection foundation...');
     const scriptedInput: FraudRiskScoreInput = { 
       ...input, 
       transactionTimestamp: input.transactionTimestamp || new Date().toISOString() 
     };
     
-    const scriptedResult = await getFraudRiskScore(scriptedInput);
+    // Start scripted detection immediately
+    const scriptedPromise = getFraudRiskScore(scriptedInput);
     
-    // LAYER 2: INTELLIGENCE - Agent Enhancement (When Available)
-    console.log('Layer 2: Running AI agent enhancement...');
-    let agentResult = null;
+    // LAYER 2: INTELLIGENCE - Start AI agent in parallel (When Available)
+    console.log('🧠 Layer 2: Starting AI agent enhancement in parallel...');
+    let agentPromise: Promise<any> | null = null;
     let agentInsights: string[] = [];
     
     if (isApiKeyConfigured()) {
-      try {
-        const agentInput: FraudAgentInput = { 
-          ...input, 
-          transactionTimestamp: input.transactionTimestamp || new Date().toISOString() 
-        };
-        agentResult = await investigateFraudAgent(agentInput);
-        agentInsights = [
-          `Agent Analysis: ${agentResult.behaviorPattern}`,
-          `Risk Assessment: ${agentResult.justification}`,
-          ...agentResult.riskTags.map(tag => `${tag}`)
-        ];
-      } catch (error) {
+      const agentInput: FraudAgentInput = { 
+        ...input, 
+        transactionTimestamp: input.transactionTimestamp || new Date().toISOString() 
+      };
+      agentPromise = investigateFraudAgent(agentInput).catch(error => {
         console.log('Agent layer failed, continuing with scripted foundation...');
-        agentInsights = ['Agent analysis temporarily unavailable - using enhanced scripted detection'];
+        return null;
+      });
+    }
+    
+    // Wait for scripted result (fast)
+    const scriptedResult = await scriptedPromise;
+    
+    // LAYER 3: FUSION - Quick score calculation while agent runs
+    console.log('🔄 Layer 3: Calculating initial fused score...');
+    let agentResult = null;
+    
+    // Give agent a maximum of 2 seconds to respond, then proceed
+    if (agentPromise) {
+      try {
+        agentResult = await Promise.race([
+          agentPromise,
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Agent timeout')), 2000))
+        ]);
+        
+        if (agentResult) {
+          agentInsights = [
+            `Agent Analysis: ${agentResult.behaviorPattern}`,
+            `Risk Assessment: ${agentResult.justification}`,
+            ...agentResult.riskTags.map((tag: string) => `${tag}`)
+          ];
+        }
+      } catch (error) {
+        console.log('Agent analysis timed out or failed - proceeding with scripted result');
+        agentInsights = ['Agent analysis timed out - using enhanced scripted detection'];
       }
     } else {
       agentInsights = ['Running in demo mode with enhanced scripted detection'];
     }
     
-    // LAYER 3: FUSION - Intelligent Score Combination
-    console.log('Layer 3: Fusing detection layers...');
     const fusedScore = calculateFusedScore(scriptedResult.fraudRiskScore, agentResult?.fraudRiskScore);
     const finalScore = fusedScore.finalScore;
     
-    // LAYER 4: ENHANCED INSIGHTS - Generate Comprehensive Analysis
-    console.log('Layer 4: Generating enhanced insights...');
-    const [insightsResult, explanationResult] = await Promise.all([
-      getTransactionInsights({
-        ...input,
-        source: input.source || 'unified-detection',
-        paymentMethod: input.paymentMethod || 'card',
-        transactionId: 'UNIFIED-' + Date.now(),
-        fraudRiskScore: finalScore,
-        behaviorPattern: agentResult?.behaviorPattern || scriptedResult.behaviorPattern,
-        riskTags: [...(scriptedResult.riskTags || []), ...(agentResult?.riskTags || [])],
-        transactionTimestamp: input.transactionTimestamp || new Date().toISOString(),
-        behavioralAnomalyScore: scriptedResult.behavioralAnomalyScore,
-        entityTrustScore: scriptedResult.entityTrustScore,
-      }),
-      generateAiExplanations({
-        ...input,
-        source: input.source || 'unified-detection',
-        paymentMethod: input.paymentMethod || 'card',
-        transactionId: 'UNIFIED-' + Date.now(),
-        fraudRiskScore: finalScore,
-        behaviorPattern: agentResult?.behaviorPattern || scriptedResult.behaviorPattern,
-        riskTags: [...(scriptedResult.riskTags || []), ...(agentResult?.riskTags || [])],
-        transactionTimestamp: input.transactionTimestamp || new Date().toISOString(),
-      })
+    // LAYER 4: ENHANCED INSIGHTS - Generate in parallel with fast fallbacks
+    console.log('📊 Layer 4: Generating enhanced insights...');
+    
+    // Use Promise.allSettled to prevent any single failure from blocking
+    const [insightsResult, explanationResult] = await Promise.allSettled([
+      Promise.race([
+        getTransactionInsights({
+          ...input,
+          source: input.source || 'unified-detection',
+          paymentMethod: input.paymentMethod || 'card',
+          transactionId: 'UNIFIED-' + Date.now(),
+          fraudRiskScore: finalScore,
+          behaviorPattern: agentResult?.behaviorPattern || scriptedResult.behaviorPattern,
+          riskTags: [...(scriptedResult.riskTags || []), ...(agentResult?.riskTags || [])],
+          transactionTimestamp: input.transactionTimestamp || new Date().toISOString(),
+          behavioralAnomalyScore: scriptedResult.behavioralAnomalyScore,
+          entityTrustScore: scriptedResult.entityTrustScore,
+        }),
+        // Fallback after 800ms for faster response
+        new Promise((resolve) => setTimeout(() => resolve({
+          insights: `Fast analysis: Risk score ${finalScore}% with ${scriptedResult.behaviorPattern} patterns detected.`
+        }), 800))
+      ]),
+      Promise.race([
+        generateAiExplanations({
+          ...input,
+          source: input.source || 'unified-detection',
+          paymentMethod: input.paymentMethod || 'card',
+          transactionId: 'UNIFIED-' + Date.now(),
+          fraudRiskScore: finalScore,
+          behaviorPattern: agentResult?.behaviorPattern || scriptedResult.behaviorPattern,
+          riskTags: [...(scriptedResult.riskTags || []), ...(agentResult?.riskTags || [])],
+          transactionTimestamp: input.transactionTimestamp || new Date().toISOString(),
+        }),
+        // Fallback after 800ms for faster response
+        new Promise((resolve) => setTimeout(() => resolve({
+          explanation: `This transaction has a ${finalScore}% fraud risk score based on ${scriptedResult.behaviorPattern} analysis.`
+        }), 800))
+      ])
     ]);
+    
+    // Extract results with fallbacks
+    const insights = insightsResult.status === 'fulfilled' ? (insightsResult.value as any)?.insights || `Fast analysis: Risk score ${finalScore}% detected.` : `Fast analysis: Risk score ${finalScore}% detected.`;
+    const explanation = explanationResult.status === 'fulfilled' ? (explanationResult.value as any)?.explanation || `Transaction analyzed with ${finalScore}% fraud risk.` : `Transaction analyzed with ${finalScore}% fraud risk.`;
     
     // LAYER 5: FINAL ASSEMBLY - Unified Result
     const processingTime = performance.now() - startTime;
@@ -151,7 +189,7 @@ export const runUnifiedFraudDetection = async (input: UnifiedDetectionInput): Pr
       ...(agentResult?.riskTags || [])
     ]));
     
-    console.log(`Enhanced Detection Complete! Score: ${finalScore}, Level: ${riskLevel}, Time: ${processingTime.toFixed(2)}ms`);
+    console.log(`⚡ Enhanced Detection Complete! Score: ${finalScore}, Level: ${riskLevel}, Time: ${processingTime.toFixed(2)}ms`);
     
     return {
       // Core Results
@@ -164,8 +202,8 @@ export const runUnifiedFraudDetection = async (input: UnifiedDetectionInput): Pr
       riskTags: combinedRiskTags,
       
       // Explanations
-      explanation: explanationResult.explanation,
-      insights: insightsResult.insights,
+      explanation,
+      insights,
       
       // Enhanced Intelligence
       agentInsights,

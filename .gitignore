@@ -44,3 +44,5 @@ next-env.d.ts
 docs/executive/
 docs/innovation/
 docs/presentations/
+docs/technical/
+SECURITY_RECOMMENDATIONS.md

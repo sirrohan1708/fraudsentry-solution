@@ -61,6 +61,7 @@ import {getTransactionInsights} from '@/ai/flows/get-transaction-insights';
 import {getFraudRiskScore, FraudRiskScoreInput} from '@/ai/flows/get-fraud-risk-score';
 import {generateAiExplanations} from '@/ai/flows/generate-ai-explanations';
 import {investigateFraudAgent, FraudAgentInput} from '@/ai/flows/investigate-fraud-agent';
+import {runUnifiedFraudDetection, UnifiedDetectionInput} from '@/ai/flows/unified-fraud-detection';
 import {cn} from '@/lib/utils';
 import {motion, AnimatePresence} from 'framer-motion';
 import { RevolutionaryFraudDashboard } from '@/components/revolutionary-dashboard';
@@ -113,6 +114,7 @@ interface AiExplanationDetails {
   behaviorPattern?: string;
   riskTags?: string[];
   isAgent?: boolean;
+  unifiedResult?: any; // Store full unified detection result
 }
 
 export default function Home() {
@@ -121,7 +123,6 @@ export default function Home() {
   const [aiDecisionLog, setAiDecisionLog] = useState<string[]>([]);
   const router = useRouter();
   const {toast} = useToast();
-  const [useAgent, setUseAgent] = useState(false);
   const [transactions, setTransactions] = useState<TransactionData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [analysisLoading, setAnalysisLoading] = useState(false);
@@ -241,47 +242,27 @@ export default function Home() {
     const currentTimestamp = new Date();
     const currentTimestampISO = currentTimestamp.toISOString();
 
-    let currentFraudScore: number;
-    let determinedBehaviorPattern: string;
-    let finalExplanation: string;
-    let riskTags: string[] = [];
-    let insightsResult: { insights: string; behavioralAnomalyScore?: number | undefined; entityTrustScore?: number | undefined; riskTags?: string[] | undefined };
-
     try {
-        if (useAgent) {
-            const agentInput: FraudAgentInput = { ...values, transactionTimestamp: currentTimestampISO };
-            const agentResult = await investigateFraudAgent(agentInput);
-            currentFraudScore = agentResult.fraudRiskScore;
-            determinedBehaviorPattern = agentResult.behaviorPattern;
-            finalExplanation = agentResult.justification;
-            riskTags = agentResult.riskTags;
-            insightsResult = {
-                insights: `Agent analysis complete. Score: ${currentFraudScore}. Pattern: ${determinedBehaviorPattern}.`,
-                riskTags: riskTags,
-                behavioralAnomalyScore: undefined,
-                entityTrustScore: undefined,
-            };
-        } else {
-            const fraudScoreInput: FraudRiskScoreInput = { ...values, transactionTimestamp: currentTimestampISO };
-            const fraudRiskResult = await getFraudRiskScore(fraudScoreInput);
-            currentFraudScore = fraudRiskResult.fraudRiskScore;
-            determinedBehaviorPattern = fraudRiskResult.behaviorPattern;
-            riskTags = fraudRiskResult.riskTags || [];
-
-            const [insightsRes, explanationRes] = await Promise.all([
-                getTransactionInsights({
-                    ...values, transactionId: tempTransactionId, fraudRiskScore: currentFraudScore, behaviorPattern: determinedBehaviorPattern,
-                    riskTags: riskTags, transactionTimestamp: currentTimestampISO,
-                    behavioralAnomalyScore: fraudRiskResult.behavioralAnomalyScore, entityTrustScore: fraudRiskResult.entityTrustScore,
-                }),
-                generateAiExplanations({
-                    ...values, transactionId: tempTransactionId, fraudRiskScore: currentFraudScore, behaviorPattern: determinedBehaviorPattern,
-                    riskTags: riskTags, transactionTimestamp: currentTimestampISO,
-                })
-            ]);
-            insightsResult = insightsRes;
-            finalExplanation = explanationRes.explanation;
-        }
+        // 🚀 USE UNIFIED FRAUD DETECTION ENGINE
+        console.log('🎯 Starting Unified Fraud Detection...');
+        const unifiedInput: UnifiedDetectionInput = { 
+          ...values, 
+          transactionTimestamp: currentTimestampISO 
+        };
+        
+        const unifiedResult = await runUnifiedFraudDetection(unifiedInput);
+        
+        // Extract results from unified engine
+        const currentFraudScore = unifiedResult.fraudRiskScore;
+        const determinedBehaviorPattern = unifiedResult.behaviorPattern;
+        const finalExplanation = unifiedResult.explanation;
+        const riskTags = unifiedResult.riskTags;
+        const insightsResult = {
+            insights: unifiedResult.insights,
+            behavioralAnomalyScore: unifiedResult.behavioralAnomalyScore,
+            entityTrustScore: unifiedResult.entityTrustScore,
+            riskTags: unifiedResult.riskTags,
+        };
 
         setFraudExplanationDetails({
             transactionId: tempTransactionId,
@@ -290,7 +271,8 @@ export default function Home() {
             explanation: finalExplanation,
             behaviorPattern: determinedBehaviorPattern,
             riskTags: riskTags,
-            isAgent: useAgent,
+            isAgent: true, // Always shows as enhanced detection
+            unifiedResult: unifiedResult, // Store full result for detailed view
         });
 
       const newTransactionDataForFirestore = {
@@ -304,7 +286,12 @@ export default function Home() {
         riskTags: riskTags ?? [],
         timestamp: serverTimestamp(),
         transactionTimestamp: currentTimestampISO,
-        isAgent: useAgent,
+        isAgent: true, // Always unified detection
+        detectionEngine: 'unified',
+        confidence: unifiedResult.confidence,
+        riskLevel: unifiedResult.riskLevel,
+        processingTime: unifiedResult.processingTime,
+        detectionMethods: unifiedResult.detectionMethods,
       };
       
       // Only save to Firebase if available
@@ -334,14 +321,14 @@ export default function Home() {
                </strong>{' '}
                ({getFraudStatus(currentFraudScore)})
              </span>
-              <span className="text-xs text-muted-foreground">Mode: {useAgent ? 'Agent' : 'Scripted'}</span>
+              <span className="text-xs text-muted-foreground">Confidence: {unifiedResult.confidence}%</span>
               <span className="text-xs text-muted-foreground">Behavior: {determinedBehaviorPattern}</span>
               {(riskTags.length ?? 0) > 0 && (
                 <span className="text-xs text-muted-foreground">
                   Tags: {riskTags.slice(0, 3).join(', ')}{riskTags.length > 3 ? '...' : ''}
                 </span>
               )}
-             <span className="text-xs text-muted-foreground">Time: {duration}s</span>
+             <span className="text-xs text-muted-foreground">Time: {(unifiedResult.processingTime / 1000).toFixed(2)}s</span>
              <Button
                variant="link" size="sm" className="p-0 h-auto text-xs text-primary justify-start hover:underline"
                onClick={(e) => {
@@ -457,35 +444,6 @@ export default function Home() {
            </motion.div>
 
            {/* Center Navigation - Hidden on Mobile */}
-           <motion.div 
-             initial={{ opacity: 0, y: -10 }}
-             animate={{ opacity: 1, y: 0 }}
-             transition={{ delay: 0.4 }}
-             className="hidden lg:flex items-center space-x-1 bg-white/50 backdrop-blur-sm rounded-full p-2 border border-white/30"
-           >
-              <Tooltip>
-                 <TooltipTrigger asChild>
-                     <div className="flex items-center space-x-3 px-4 py-2 rounded-full hover:bg-white/60 transition-colors cursor-pointer">
-                         <div className="flex items-center space-x-2">
-                           <div className={`w-3 h-3 rounded-full ${useAgent ? 'bg-purple-500' : 'bg-blue-500'} animate-pulse`}></div>
-                           <Label htmlFor="useAgent" className="text-sm font-medium text-gray-700 cursor-pointer">
-                             {useAgent ? '🤖 Agent Mode' : '📋 Scripted Mode'}
-                           </Label>
-                         </div>
-                         <Switch
-                             id="useAgent" 
-                             checked={useAgent} 
-                             onCheckedChange={setUseAgent}
-                             className="data-[state=checked]:bg-purple-500"
-                         />
-                     </div>
-                 </TooltipTrigger>
-                  <TooltipContent side="bottom" className="text-sm bg-white/90 backdrop-blur-sm">
-                    {useAgent ? "Dynamic AI agent with advanced reasoning" : "High-speed scripted analysis"}
-                  </TooltipContent>
-              </Tooltip>
-           </motion.div>
-
            {/* Action Buttons - Mobile Responsive */}
            <motion.div 
              initial={{ opacity: 0, x: 20 }}
@@ -493,25 +451,6 @@ export default function Home() {
              transition={{ delay: 0.5 }}
              className="flex items-center space-x-2 sm:space-x-3"
            >
-             {/* Mobile Mode Toggle */}
-             <div className="lg:hidden">
-               <Tooltip>
-                 <TooltipTrigger asChild>
-                   <Button
-                     variant="outline"
-                     size="sm"
-                     onClick={() => setUseAgent(!useAgent)}
-                     className="bg-white/50 backdrop-blur-sm border-white/40 hover:bg-white/70 transition-all duration-300 p-2"
-                   >
-                     <div className={`w-2 h-2 rounded-full ${useAgent ? 'bg-purple-500' : 'bg-blue-500'} animate-pulse`}></div>
-                   </Button>
-                 </TooltipTrigger>
-                 <TooltipContent side="bottom" className="text-xs bg-white/90 backdrop-blur-sm">
-                   {useAgent ? "Agent Mode" : "Scripted Mode"}
-                 </TooltipContent>
-               </Tooltip>
-             </div>
-             
              {/* Professional Demo Actions Dropdown */}
              <DropdownMenu>
                <DropdownMenuTrigger asChild>

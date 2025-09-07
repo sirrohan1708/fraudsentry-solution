@@ -142,32 +142,6 @@ const tutorialCards: TutorialCard[] = [
       "Investigation automation",
       "Compliance reporting"
     ]
-  },
-  {
-    id: 11,
-    title: "Behavioral Biometrics",
-    content: "Industry-first behavioral biometrics analyzing typing rhythm, mouse patterns, and touch pressure to create unique user signatures that are impossible to replicate.",
-    icon: <Play className="h-6 w-6" />,
-    category: 'advanced',
-    steps: [
-      "Keystroke dynamics analysis",
-      "Mouse movement patterns",
-      "Touch pressure signatures",
-      "Interaction behavior profiling"
-    ]
-  },
-  {
-    id: 12,
-    title: "Emotional AI Detection",
-    content: "Revolutionary emotional state analysis detecting fraud stress indicators through voice patterns, text sentiment, and interaction behaviors that traditional systems miss.",
-    icon: <BookOpen className="h-6 w-6" />,
-    category: 'advanced',
-    steps: [
-      "Voice stress analysis",
-      "Emotional pattern recognition",
-      "Fraud anxiety detection",
-      "Psychological profiling"
-    ]
   }
 ];
 
@@ -198,11 +172,11 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
 
   const getCategoryColor = (category: TutorialCard['category']) => {
     switch (category) {
-      case 'basics': return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
-      case 'ai': return 'bg-purple-500/20 text-purple-300 border-purple-500/30';
-      case 'analysis': return 'bg-green-500/20 text-green-300 border-green-500/30';
-      case 'advanced': return 'bg-orange-500/20 text-orange-300 border-orange-500/30';
-      default: return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+      case 'basics': return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'ai': return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'analysis': return 'bg-green-100 text-green-800 border-green-200';
+      case 'advanced': return 'bg-orange-100 text-orange-800 border-orange-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
@@ -218,19 +192,19 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl h-[90vh] bg-gray-900/95 backdrop-blur-xl border border-gray-800/50 text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 via-purple-900/20 to-cyan-900/20" />
+      <DialogContent className="max-w-4xl h-[90vh] bg-white/95 backdrop-blur-xl border border-white/30 shadow-2xl text-gray-800 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/20 to-purple-50/30" />
         
         <DialogHeader className="relative z-10 pb-6">
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-purple-700 bg-clip-text text-transparent">
               FraudSentry Tutorial
             </DialogTitle>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={onClose}
-              className="text-gray-400 hover:text-white hover:bg-gray-800/50"
+              className="text-gray-600 hover:text-gray-800 hover:bg-gray-100/50"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -250,7 +224,7 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
                 className={`${
                   filter === category 
                     ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                    : 'border-gray-600 text-gray-300 hover:bg-gray-800/50'
+                    : 'border-gray-300 text-gray-700 hover:bg-gray-100/50'
                 }`}
               >
                 {category === 'all' ? 'All Cards' : getCategoryLabel(category as TutorialCard['category'])}
@@ -267,13 +241,13 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
               size="sm"
               onClick={prevCard}
               disabled={filteredCards.length <= 1}
-              className="border-gray-600 text-gray-300 hover:bg-gray-800/50 disabled:opacity-50"
+              className="border-gray-300 text-gray-700 hover:bg-gray-100/50 disabled:opacity-50"
             >
               <ChevronLeft className="h-4 w-4 mr-1" />
               Previous
             </Button>
             
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-gray-600">
               {currentCard + 1} of {filteredCards.length}
             </div>
             
@@ -282,7 +256,7 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
               size="sm"
               onClick={nextCard}
               disabled={filteredCards.length <= 1}
-              className="border-gray-600 text-gray-300 hover:bg-gray-800/50 disabled:opacity-50"
+              className="border-gray-300 text-gray-700 hover:bg-gray-100/50 disabled:opacity-50"
             >
               Next
               <ChevronRight className="h-4 w-4 ml-1" />
@@ -300,7 +274,7 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
                 transition={{ duration: 0.3 }}
                 className="flex-1 min-h-0"
               >
-                <Card className="h-full bg-gray-800/30 border-gray-700/50 backdrop-blur-sm">
+                <Card className="h-full bg-white/30 border-gray-200/50 backdrop-blur-sm">
                   <CardContent className="p-8 h-full flex flex-col">
                     <div className="flex items-start gap-4 mb-6">
                       <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-blue-500/30">
@@ -308,14 +282,14 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-3">
-                          <h3 className="text-xl font-semibold text-white">
+                          <h3 className="text-xl font-semibold text-gray-900">
                             {currentCardData.title}
                           </h3>
                           <Badge variant="outline" className={getCategoryColor(currentCardData.category)}>
                             {getCategoryLabel(currentCardData.category)}
                           </Badge>
                         </div>
-                        <p className="text-gray-300 text-base leading-relaxed">
+                        <p className="text-gray-700 text-base leading-relaxed">
                           {currentCardData.content}
                         </p>
                       </div>
@@ -323,7 +297,7 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
 
                     {currentCardData.steps && (
                       <div className="mt-6">
-                        <h4 className="text-lg font-medium text-white mb-4">Key Features:</h4>
+                        <h4 className="text-lg font-medium text-gray-900 mb-4">Key Features:</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                           {currentCardData.steps.map((step, index) => (
                             <motion.div
@@ -331,12 +305,12 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               transition={{ delay: index * 0.1 }}
-                              className="flex items-center gap-3 p-3 rounded-lg bg-gray-700/30 border border-gray-600/30"
+                              className="flex items-start gap-3 p-3 rounded-lg bg-gray-100/50 border border-gray-200/50"
                             >
-                              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-xs font-bold text-white">
+                              <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center text-xs font-bold text-white flex-shrink-0 mt-0.5">
                                 {index + 1}
                               </div>
-                              <span className="text-gray-300">{step}</span>
+                              <span className="text-gray-700 leading-relaxed">{step}</span>
                             </motion.div>
                           ))}
                         </div>
@@ -357,7 +331,7 @@ export default function TutorialFlashcards({ isOpen, onClose }: TutorialFlashcar
                 className={`w-2 h-2 rounded-full transition-all duration-200 ${
                   index === currentCard 
                     ? 'bg-blue-500 w-6' 
-                    : 'bg-gray-600 hover:bg-gray-500'
+                    : 'bg-gray-300 hover:bg-gray-400'
                 }`}
               />
             ))}

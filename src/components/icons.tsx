@@ -23,6 +23,8 @@ import {
   Loader2,
   Tag,
   HelpCircle,
+  Target,
+  X,
 } from 'lucide-react';
 
 export const Icons = {
@@ -50,4 +52,6 @@ export const Icons = {
   spinner: Loader2,
   tag: Tag,
   help: HelpCircle,
+  target: Target,
+  x: X,
 };

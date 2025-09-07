@@ -21,7 +21,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Icons } from '@/components/icons';
+import ChargebackIntelligence from '@/components/chargeback-intelligence';
 import { cn } from '@/lib/utils';
 import {
   LineChart,
@@ -399,6 +401,13 @@ export default function AdminDashboard() {
       </header>
 
       <main className="flex-1 container mx-auto px-4 py-8">
+        <Tabs defaultValue="fraud-detection" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="fraud-detection">Fraud Detection</TabsTrigger>
+            <TabsTrigger value="chargeback-intelligence">Chargeback Intelligence</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="fraud-detection" className="space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <motion.div
@@ -826,6 +835,12 @@ export default function AdminDashboard() {
             </CardContent>
           </Card>
         </motion.div>
+          </TabsContent>
+          
+          <TabsContent value="chargeback-intelligence">
+            <ChargebackIntelligence />
+          </TabsContent>
+        </Tabs>
       </main>
     </div>
   );

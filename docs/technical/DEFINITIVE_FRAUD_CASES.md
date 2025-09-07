@@ -1,9 +1,9 @@
-## 🎯 **DEFINITIVE FRAUD DETECTION TEST CASES**
+## **DEFINITIVE FRAUD DETECTION TEST CASES**
 ### *Micro-transactions that WILL be flagged as fraud with 99.9% confidence*
 
 ---
 
-## **Case 1: Behavioral Biometrics Certainty** ⚡
+## **Case 1: Behavioral Biometrics Certainty**
 ### *$12.99 Coffee Purchase - DEFINITIVE FRAUD*
 
 ```
@@ -15,7 +15,7 @@ Location: San Francisco, CA
 User ID: user_78234_jennifer_kim
 ```
 
-**🔴 FRAUD CERTAINTY: 99.8%**
+**FRAUD CERTAINTY: 99.8%**
 
 **Biometric Violations (Impossible to fake):**
 - **Keystroke DNA Mismatch:** User Jennifer types with 125ms dwell time, 85ms flight time. Transaction shows 78ms dwell, 145ms flight - IMPOSSIBLE for same person
@@ -27,7 +27,7 @@ User ID: user_78234_jennifer_kim
 
 ---
 
-## **Case 2: Emotional AI Absolute Detection** 🧠
+## **Case 2: Emotional AI Absolute Detection**
 ### *$8.50 Sandwich - DEFINITIVE FRAUD*
 
 ```
@@ -39,7 +39,7 @@ Location: Boston, MA
 User ID: user_45612_michael_chen
 ```
 
-**🔴 FRAUD CERTAINTY: 99.7%**
+**FRAUD CERTAINTY: 99.7%**
 
 **Emotional Stress Indicators (Impossible to hide):**
 - **Voice Print Violation:** Michael's vocal cord length creates 142Hz fundamental frequency. Call shows 168Hz - DIFFERENT PERSON
@@ -51,7 +51,7 @@ User ID: user_45612_michael_chen
 
 ---
 
-## **Case 3: Network Graph Absolute Certainty** 🕸️
+## **Case 3: Network Graph Absolute Certainty**
 ### *$3.99 App Purchase - DEFINITIVE FRAUD*
 
 ```
@@ -63,7 +63,7 @@ Location: Denver, CO
 User ID: user_89123_sarah_lopez
 ```
 
-**🔴 FRAUD CERTAINTY: 99.9%**
+**FRAUD CERTAINTY: 99.9%**
 
 **Network Fraud Ring Evidence:**
 - **Device Fingerprint Collision:** Sarah's device shares EXACT hardware signature with 23 other "users" - IMPOSSIBLE
@@ -75,7 +75,7 @@ User ID: user_89123_sarah_lopez
 
 ---
 
-## **Case 4: Temporal Intelligence Certainty** ⏰
+## **Case 4: Temporal Intelligence Certainty**
 ### *$15.75 Gas Station - DEFINITIVE FRAUD*
 
 ```
@@ -87,7 +87,7 @@ Location: Miami, FL
 User ID: user_67834_david_wilson
 ```
 
-**🔴 FRAUD CERTAINTY: 99.6%**
+**FRAUD CERTAINTY: 99.6%**
 
 **Temporal Impossibility Evidence:**
 - **Location Violation:** David's phone GPS shows him at work in Seattle 3 minutes before Miami transaction - IMPOSSIBLE
@@ -99,7 +99,7 @@ User ID: user_67834_david_wilson
 
 ---
 
-## **Case 5: Micro-Pattern AI Certainty** 🔬
+## **Case 5: Micro-Pattern AI Certainty**
 ### *$1.99 Digital Song - DEFINITIVE FRAUD*
 
 ```
@@ -111,7 +111,7 @@ Location: Portland, OR
 User ID: user_23456_lisa_chen
 ```
 
-**🔴 FRAUD CERTAINTY: 99.8%**
+**FRAUD CERTAINTY: 99.8%**
 
 **Micro-Behavioral Violations:**
 - **Click Pressure Signature:** Lisa clicks with 0.15 newtons force (measured over 6 months). Transaction: 0.31 newtons - DIFFERENT PERSON
@@ -123,7 +123,7 @@ User ID: user_23456_lisa_chen
 
 ---
 
-## **Case 6: Psychological Profile Certainty** 🧬
+## **Case 6: Psychological Profile Certainty**
 ### *$5.25 Parking Meter - DEFINITIVE FRAUD*
 
 ```
@@ -135,7 +135,7 @@ Location: San Francisco, CA
 User ID: user_34789_robert_kim
 ```
 
-**🔴 FRAUD CERTAINTY: 99.9%**
+**FRAUD CERTAINTY: 99.9%**
 
 **Psychological Impossibility:**
 - **Risk Tolerance Violation:** Robert is extremely risk-averse (pays bills 15 days early, checks account 3x daily). Using public WiFi for payment - impossible behavioral shift
@@ -147,7 +147,7 @@ User ID: user_34789_robert_kim
 
 ---
 
-## **Case 7: Quantum Sensor Detection** ⚛️
+## **Case 7: Quantum Sensor Detection**
 ### *$0.99 Candy Bar - DEFINITIVE FRAUD*
 
 ```
@@ -159,7 +159,7 @@ Location: New York, NY
 User ID: user_56789_emma_garcia
 ```
 
-**🔴 FRAUD CERTAINTY: 99.95%**
+**FRAUD CERTAINTY: 99.95%**
 
 **Quantum-Level Detection:**
 - **Heartbeat Signature:** Card reader detected 82 BPM heartbeat via contactless sensor. Emma's baseline: 67 BPM - indicates stress/different person
@@ -171,7 +171,7 @@ User ID: user_56789_emma_garcia
 
 ---
 
-## 🎯 **SYSTEM CONFIDENCE LEVELS**
+## **SYSTEM CONFIDENCE LEVELS**
 
 | Detection Method | Confidence | False Positive Rate |
 |------------------|------------|-------------------|
@@ -182,7 +182,7 @@ User ID: user_56789_emma_garcia
 | Psychological Profiling | 99.9% | 0.01% |
 | Quantum Sensors | 99.95% | 0.005% |
 
-## 💡 **Demo Script:**
+## **Demo Script:**
 
 **"Watch this - a $0.99 candy bar purchase. Traditional systems see normal transaction. Our quantum sensors detected the fraudster's heartbeat was 15 BPM higher than the real user. FRAUD CONFIRMED."**
 

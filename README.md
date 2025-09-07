@@ -36,10 +36,8 @@ A comprehensive fraud detection platform featuring graph analytics, AI-powered c
 ```
 fraudsentry_solution/
 ├── docs/                      # Documentation organized by category
-│   ├── presentations/         # Client demonstrations and presentation materials
 │   ├── technical/            # Technical documentation and implementation guides
-│   ├── executive/            # Executive summaries and strategic documents
-│   └── innovation/           # Innovation analysis and capability assessments
+│   └── README.md             # Documentation overview and navigation
 ├── src/
 │   ├── ai/                   # AI agents and processing flows
 │   │   ├── agents/          # Individual AI agent implementations
@@ -111,17 +109,14 @@ npm run dev
 
 ## Documentation
 
-Documentation is organized in the `/docs` directory with the following structure:
+Documentation is organized in the `/docs` directory with technical implementation guides and specifications.
 
-- **presentations/**: Client demonstrations and presentation materials
-- **technical/**: Implementation guides and technical specifications
-- **executive/**: Strategic documents and business positioning
-- **innovation/**: Advanced capabilities and competitive analysis
+- **technical/**: Implementation guides, technical specifications, and development documentation
 
 ### Key Documentation Files
-- [Graph Demo Script](./docs/presentations/GRAPH_DEMO_SCRIPT.md) - Technical presentation for industry experts
 - [Graph Capabilities Deep Dive](./docs/technical/GRAPH_CAPABILITIES_DEEP_DIVE.md) - Advanced graph analytics documentation
 - [Implementation Status](./docs/technical/IMPLEMENTATION_STATUS.md) - Current development status and roadmap
+- [Definitive Fraud Cases](./docs/technical/DEFINITIVE_FRAUD_CASES.md) - Comprehensive fraud detection case studies
 
 ## System Architecture
 
